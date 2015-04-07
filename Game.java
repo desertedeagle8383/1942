@@ -2,7 +2,7 @@ import java.awt.event.ActionListener;
 import java.util.Timer;
 
 public class Game{
-	private int score;
+    private int score;
     private int lives;
     private int rolls;
     private long initialTime;
@@ -41,6 +41,7 @@ public class Game{
     }
     
     public void cancelTasks(){
+    	timer.cancel();
     	timer.purge();
     }
 }
