@@ -15,19 +15,13 @@ public class Grid {
     	enemies.add(enemy);
     }
     public void removeEnemy(Enemy enemy){
-    	for(int i = 0; i < enemies.size(); i++){
-    		if (enemies.get(i) == enemy)
-    			enemies.remove(i);
-    	}
+    	enemies.remove(enemy);
     }
     public void addProjectile(Projectile projectile){
     	projectiles.add(projectile);
     }
     public void removeProjectile(Projectile projectile){
-    	for(int i = 0; i < projectiles.size(); i++){
-    		if (projectiles.get(i) == projectile)
-    			projectiles.remove(i);
-    	}
+    	projectiles.remove(projectile);
     }
     public int getWidth(){return width;}
     public int getHeight(){return height;}
