@@ -8,7 +8,7 @@ public class Hitbox {
 		Rectangle projectileBox = new Rectangle();
 		
 		playerBox.setBounds(player.getCoordinate().getX(), player.getCoordinate().getY(), 30, 30);
-		projectileBox.setBounds(projectile.getCoordinate().getX(), projectile.getCoordinate().getY(), 10, 10);
+		projectileBox.setBounds(projectile.getCoordinate().getX(), projectile.getCoordinate().getY(), 5, 5);
 		
 		return playerBox.intersects(projectileBox);
 	}
@@ -18,8 +18,8 @@ public class Hitbox {
 		Rectangle enemyBox = new Rectangle();
 		Rectangle projectileBox = new Rectangle();
 		
-		enemyBox.setBounds(enemy.getCoordinate().getX(), enemy.getCoordinate().getY(), 30, 30);
-		projectileBox.setBounds(projectile.getCoordinate().getX(), projectile.getCoordinate().getY(), 10, 10);
+		enemyBox.setBounds(enemy.getCoordinate().getX(), enemy.getCoordinate().getY(), enemy.getWidth(), enemy.getHeight());
+		projectileBox.setBounds(projectile.getCoordinate().getX(), projectile.getCoordinate().getY(), 5, 5);
 		
 		return enemyBox.intersects(projectileBox);
 	}
@@ -29,8 +29,8 @@ public class Hitbox {
 		Rectangle playerBox = new Rectangle();
 		Rectangle enemyBox = new Rectangle();
 
-		playerBox.setBounds(player.getCoordinate().getX(), player.getCoordinate().getY(), 10, 10);
-		enemyBox.setBounds(enemy.getCoordinate().getX(), enemy.getCoordinate().getY(), 30, 30);
+		playerBox.setBounds(player.getCoordinate().getX(), player.getCoordinate().getY(), 30, 30);
+		enemyBox.setBounds(enemy.getCoordinate().getX(), enemy.getCoordinate().getY(), enemy.getWidth(), enemy.getHeight());
 
 		return playerBox.intersects(enemyBox);
 	}
