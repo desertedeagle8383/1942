@@ -2,7 +2,7 @@ import java.awt.event.ActionListener;
 import java.util.Timer;
 
 public class Game{
-    private int score;
+	private int score;
     private int lives;
     private int rolls;
     private long initialTime;
@@ -24,10 +24,9 @@ public class Game{
     public Grid getGrid(){return grid;}
     
     public void shoot(){
-    	Projectile newProjectile = new Projectile();
-    	
+    	Projectile newProjectile = new Projectile(false, grid.getPlayer().getCoordinate());
     	newProjectile.setXVelocity(0);
-    	newProjectile.setYVelocity(1);
+    	newProjectile.setYVelocity(10);
     	grid.addProjectile(newProjectile);
     }
     
