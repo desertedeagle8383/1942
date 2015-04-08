@@ -16,7 +16,7 @@ public class GameFrame extends JFrame implements KeyListener{
 		rollsLabel = new JLabel(Integer.toString(game.getRolls()));
 		
 		panel = new GamePanel(game.getGrid());
-		panel.addKeyListener(this);
+		panel.addKeyListener(new GameKeyListener());
 		panel.setFocusable(true);
 	}
 	
@@ -31,19 +31,22 @@ public class GameFrame extends JFrame implements KeyListener{
 
 	}
 
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_LEFT){
-			game.getGrid().getPlayer().setXVelocity(-1);
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-			game.getGrid().getPlayer().setXVelocity(-1);
-		} else if (e.getKeyCode() == KeyEvent.VK_UP){
-			game.getGrid().getPlayer().setYVelocity(1);
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
-			game.getGrid().getPlayer().setYVelocity(-1);
-		} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
-			game.getGrid().getPlayer().fire();
+	private class GameKeyListener implements KeyListener{
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_LEFT){
+				game.getGrid().getPlayer().setXVelocity(-1);
+			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+				game.getGrid().getPlayer().setXVelocity(-1);
+			} else if (e.getKeyCode() == KeyEvent.VK_UP){
+				game.getGrid().getPlayer().setYVelocity(1);
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
+				game.getGrid().getPlayer().setYVelocity(-1);
+			} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
+				game.getGrid().getPlayer().fire();
+			}
 		}
+
+		public void keyReleased(KeyEvent arg0) {}
+		public void keyTyped(KeyEvent arg0) {}
 	}
-	public void keyReleased(KeyEvent arg0) {}
-	public void keyTyped(KeyEvent arg0) {}
 }
