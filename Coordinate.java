@@ -1,4 +1,3 @@
-
 public class Coordinate {
 	double x, y;
 	
@@ -6,11 +5,8 @@ public class Coordinate {
 		this.x = x;
 		this.y = y; 
 	}
-	
 	public int getX(){return (int)x;}
 	public int getY(){return (int)y;}
 	public void setX(double newX){x = newX;}
 	public void setY(double newY){y = newY;}
-
-
 }
