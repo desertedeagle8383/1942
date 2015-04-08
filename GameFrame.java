@@ -34,22 +34,16 @@ public class GameFrame extends JFrame implements KeyListener{
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_LEFT){
 			game.getGrid().getPlayer().setXVelocity(-1);
-		} 
-		if (e.getKeyCode() == KeyEvent.VK_RIGHT){
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 			game.getGrid().getPlayer().setXVelocity(-1);
-		}
-		if (e.getKeyCode() == KeyEvent.VK_UP){
+		} else if (e.getKeyCode() == KeyEvent.VK_UP){
 			game.getGrid().getPlayer().setYVelocity(1);
-		}
-		if (e.getKeyCode() == KeyEvent.VK_DOWN){
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
 			game.getGrid().getPlayer().setYVelocity(-1);
-		} 
-		if (e.getKeyCode() == KeyEvent.VK_SPACE){
+		} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 			game.getGrid().getPlayer().fire();
 		}
-
-}
-
-public void keyReleased(KeyEvent arg0) {}
-public void keyTyped(KeyEvent arg0) {}
+	}
+	public void keyReleased(KeyEvent arg0) {}
+	public void keyTyped(KeyEvent arg0) {}
 }
