@@ -5,6 +5,7 @@ public class Enemy extends Plane{
 	private int health;
 	private int width;
 	private int height;
+	private Powerup powerup;
 	private ArrayList<Action> actions;
 	
 	public Enemy(int width, int height, int health, ArrayList<Action> actions){
@@ -12,6 +13,14 @@ public class Enemy extends Plane{
 		this.actions = actions;
 		this.width = width;
 		this.height = height;
+		this.powerup = null;
+	}
+	public Enemy(int width, int height, int health, ArrayList<Action> actions, Powerup powerupDrop){
+		this.health = health;
+		this.actions = actions;
+		this.width = width;
+		this.height = height;
+		this.powerup = powerupDrop;
 	}
 	
 	public ArrayList<Action> getActions(){return actions;}
@@ -20,5 +29,7 @@ public class Enemy extends Plane{
 	public long getInitialTime(){return initialTime;}
 	public void setInitialTime(long initialTime){this.initialTime = initialTime;}
 	public int getHealth(){return health;}
+	public boolean hasPowerup() {return powerup == null;}
+	public Powerup getPowerup() {return powerup;}
 	public boolean isAlive(){return (health == 0);}
 }
