@@ -5,11 +5,19 @@ public class Grid {
 	private int height;
 	private ArrayList<Enemy> enemies;
 	private ArrayList<Projectile> projectiles;
+	private ArrayList<Powerup> powerups;
 	private Player player;
 
 	public Grid(int width, int height){
 		this.width = width;
 		this.height = height;
+	}
+
+	public void addPowerup(Powerup powerup){
+		powerups.add(powerup);
+	}
+	public void removePowerup(Powerup powerup){
+		powerups.add(powerup);
 	}
 	public void addEnemy(Enemy enemy){
 		enemies.add(enemy);
@@ -27,6 +35,7 @@ public class Grid {
 	public int getHeight(){return height;}
 	public ArrayList<Enemy> getEnemies(){return enemies;}
 	public ArrayList<Projectile> getProjectiles(){return projectiles;}
+	public ArrayList<Powerup> getPowerups(){return powerups;}
 	public void createPlayer(){
 		player = new Player();
 	}
