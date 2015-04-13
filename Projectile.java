@@ -14,9 +14,17 @@ public class Projectile extends Thing{
 			angle = Math.atan((targetCoordinate.getY() - coordinate.getY())/(targetCoordinate.getX() - coordinate.getX()));
 		}
 		this.setCoordinate(coordinate);
-		this.setXVelocity(450*Math.cos(angle));
-		this.setYVelocity(450*Math.sin(angle));
+		this.setXVelocity((int) (450*Math.cos(angle)));
+		this.setYVelocity((int) (450*Math.sin(angle)));
 	}
+	
+	public Projectile(boolean enemy, Coordinate coordinate) {
+		enemyProjectile = enemy;
+		this.setCoordinate(coordinate);
+		this.setXVelocity(0);
+		this.setYVelocity(450);
+	}
+	
 	public boolean isEnemyProjectile() {
 		return enemyProjectile;
 	}
