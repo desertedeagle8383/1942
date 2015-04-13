@@ -13,6 +13,10 @@ public class Game{
 	private Grid grid;
 	private Timer timer;
 	private ArrayList<Level> levels;
+	private boolean left;
+	private boolean right;
+	private boolean up;
+	private boolean down;
 
 	public Game(Grid grid){
 		score = 0;
@@ -73,6 +77,7 @@ public class Game{
 					}
 				}
 			}
+			if ()
 		}
 	}
 
@@ -112,4 +117,18 @@ public class Game{
 		timer.cancel();
 		timer.purge();
 	}
+
+	public void setLeft(boolean asd) {
+		left = asd;
+	}
+	public void setRight(boolean asd) {
+		right = asd;
+	}
+	public void setUp(boolean asd) {
+		up = asd;
+	}
+	public void setDown(boolean asd) {
+		down = asd;
+	}
+
 }
