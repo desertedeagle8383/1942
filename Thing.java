@@ -4,6 +4,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public abstract class Thing {
+	private int width;
+	private int height;
 	private Coordinate currentCoordinate;
 	private int xVelocity;
 	private int yVelocity;
@@ -25,5 +27,17 @@ public abstract class Thing {
 		}
 	}
 	public Image getImage(){return image;}
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
 	
 }
