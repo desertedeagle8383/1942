@@ -1,5 +1,6 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
@@ -11,6 +12,8 @@ public class GameFrame extends JFrame{
 	private GamePanel panel;
 	private JLabel scoreLabel, livesLabel, rollsLabel;
 	private JPanel contentPane;
+	private boolean left = false, right = false, up = false, down = false;
+	
 	
 	public GameFrame(Game game){
 		this.game = game;
@@ -28,17 +31,22 @@ public class GameFrame extends JFrame{
 		contentPane = new JPanel();
 		
 	}
+	public boolean getRight(){return right;}
+	public boolean getLeft(){return left;}
+	public boolean getDown(){return down;}
+	public boolean getUp(){return up;}
+
 	public void initializeGUI(){
-		setSize(1000, 1000);
+		setSize(800, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setContentPane(contentPane);
 		add(panel);
 		
-		contentPane.setSize(new Dimension(1000, 50));
+		contentPane.setSize(new Dimension(800, 50));
 		contentPane.add(scoreLabel);
 		contentPane.add(livesLabel);
 		
-		panel.setSize(new Dimension(1000, 950));
+		panel.setSize(new Dimension(800, 750));
 		
 		setVisible(true);
 		
@@ -52,12 +60,16 @@ public class GameFrame extends JFrame{
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_LEFT){
 				game.getGrid().getPlayer().setXVelocity(-1);
+				left = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 				game.getGrid().getPlayer().setXVelocity(-1);
+				right = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_UP){
 				game.getGrid().getPlayer().setYVelocity(1);
+				up = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
 				game.getGrid().getPlayer().setYVelocity(-1);
+				left = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 				game.shoot();
 			}
@@ -66,18 +78,27 @@ public class GameFrame extends JFrame{
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_LEFT){
 				game.getGrid().getPlayer().setXVelocity(0);
+				left = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 				game.getGrid().getPlayer().setXVelocity(0);
+				right = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_UP){
 				game.getGrid().getPlayer().setYVelocity(0);
+				up = true;
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
 				game.getGrid().getPlayer().setYVelocity(0);
+				down = true;
 			}
 		}
 		public void keyTyped(KeyEvent arg0) {}
 	}
+	public void paintComponent(Graphics g){
+		super.paintComponents(g);
+		panel.updatePanel(g);
+
+	}
 	public static void main(String args[]){
-		Grid grid = new Grid(1000, 950);
+		Grid grid = new Grid(800, 750);
 		Game game = new Game(grid);
 		GameFrame frame = new GameFrame(game);
 		frame.initializeGUI();
