@@ -19,6 +19,10 @@ public class Game{
 	private boolean down;
 
 	public Game(Grid grid){
+		up = false;
+		down = false;
+		left = false;
+		right = false;
 		score = 0;
 		lives = 3;
 		rolls = 2;
@@ -42,6 +46,16 @@ public class Game{
 		long elapsedTime = System.currentTimeMillis() - initialTime;
 		Player player = grid.getPlayer();
 
+		for (int i = 0; i < grid.getProjectiles().size(); i++) {
+			Projectile currentProjectile = grid.getProjectiles().get(i);
+			Coordinate lastCoo = currentProjectile.getCoordinate();
+			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
+			if (newCoo.getX() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() > grid.getHeight())
+				grid.removeProjectile(currentProjectile);
+			else
+				currentProjectile.setCoordinate(new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity())));
+		}
+		
 		for (int i = 0; i < grid.getProjectiles().size(); i++) {
 			Projectile currentProjectile = grid.getProjectiles().get(i);
 			Coordinate lastCoo = currentProjectile.getCoordinate();
@@ -77,7 +91,18 @@ public class Game{
 					}
 				}
 			}
-			if ()
+			Coordinate playerCoo = player.getCoordinate();
+			int netX = 0;
+			int netY = 0;
+			if (left)
+				netX -= 10;
+			if (right)
+				netX += 10;
+			if (up)
+				netY += 10;
+			if (down)
+				netY -= 10;
+			player.setCoordinate(new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY));
 		}
 	}
 
