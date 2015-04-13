@@ -11,9 +11,7 @@ public class GameFrame extends JFrame{
 	private Game game;
 	private GamePanel panel;
 	private JLabel scoreLabel, livesLabel, rollsLabel;
-	private JPanel contentPane;
-	private boolean left = false, right = false, up = false, down = false;
-	
+	private JPanel contentPane;	
 	
 	public GameFrame(Game game){
 		this.game = game;
@@ -31,10 +29,6 @@ public class GameFrame extends JFrame{
 		contentPane = new JPanel();
 		
 	}
-	public boolean getRight(){return right;}
-	public boolean getLeft(){return left;}
-	public boolean getDown(){return down;}
-	public boolean getUp(){return up;}
 
 	public void initializeGUI(){
 		setSize(800, 800);
@@ -59,17 +53,13 @@ public class GameFrame extends JFrame{
 	private class GameKeyListener implements KeyListener{
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_LEFT){
-				game.getGrid().getPlayer().setXVelocity(-1);
-				left = true;
+				game.setLeft(true);
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-				game.getGrid().getPlayer().setXVelocity(-1);
-				right = true;
+				game.setRight(true);
 			} else if (e.getKeyCode() == KeyEvent.VK_UP){
-				game.getGrid().getPlayer().setYVelocity(1);
-				up = true;
+				game.setUp(true);
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
-				game.getGrid().getPlayer().setYVelocity(-1);
-				left = true;
+				game.setDown(true);
 			} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
 				game.shoot();
 			}
@@ -77,17 +67,13 @@ public class GameFrame extends JFrame{
 		}
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_LEFT){
-				game.getGrid().getPlayer().setXVelocity(0);
-				left = false;
+				game.setLeft(false);
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-				game.getGrid().getPlayer().setXVelocity(0);
-				right = true;
+				game.setRight(false);
 			} else if (e.getKeyCode() == KeyEvent.VK_UP){
-				game.getGrid().getPlayer().setYVelocity(0);
-				up = true;
+				game.setUp(false);
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
-				game.getGrid().getPlayer().setYVelocity(0);
-				down = true;
+				game.setDown(false);
 			}
 		}
 		public void keyTyped(KeyEvent arg0) {}
