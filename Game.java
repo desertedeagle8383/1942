@@ -36,7 +36,18 @@ public class Game{
 
 	public void nextFrame(long initialTime){
 		long elapsedTime = System.currentTimeMillis() - initialTime;
-		
+		Player player = grid.getPlayer();
+
+		for (int i = 0; i < grid.getProjectiles().size(); i++) {
+			Projectile currentProjectile = grid.getProjectiles().get(i);
+			Coordinate lastCoo = currentProjectile.getCoordinate();
+			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
+			if (newCoo.getX() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() > grid.getHeight())
+				grid.removeProjectile(currentProjectile);
+			else
+				currentProjectile.setCoordinate(new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity())));
+		}
+
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
 			Enemy currentEnemy = grid.getEnemies().get(i);
 			Coordinate lastCoo = currentEnemy.getCoordinate();
@@ -46,14 +57,25 @@ public class Game{
 				if (delay < elapsedTime && delay > elapsedTime - 30) {
 					currentEnemy.setXVelocity(currentAction.getXVelocity());
 					currentEnemy.setYVelocity(currentAction.getYVelocity());
+				}
+				Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
+				if (newCoo.getX() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() > grid.getHeight()) {
+					grid.removeEnemy(currentEnemy);
+				} else {
+					currentEnemy.setCoordinate(newCoo);
 					if (currentAction.getFire())
-						grid.addProjectile()
+						if (currentAction.aimsAtPlayer()) 
+							grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), player.getCoordinate()));
+						else
+							grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getTargetCoordinate()));
+					if (currentAction.getLoop()) {
+						currentEnemy.getActions().add(currentAction.generateLoopedCopy());
+					}
 				}
 			}
-			currentEnemy.setCoordinate(new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity())));
 		}
 	}
-	
+
 	public void startLevel(){
 		if (currentLevel < levels.size()) {
 			initialTime = System.currentTimeMillis();
@@ -72,16 +94,16 @@ public class Game{
 			endGame();
 		}
 	}
-	
+
 	public void startGame() {
 		currentLevel = 1;
 		startLevel();
 	}
-	
+
 	private void endLevel() {
 		cancelTasks();
 	}
-	
+
 	private void endGame() {
 		cancelTasks();
 	}
