@@ -1,7 +1,7 @@
 
 public class Action {
-	private double xVelocity;
-	private double yVelocity;
+	private int xVelocity;
+	private int yVelocity;
 	private boolean fire;
 	private boolean loop;
 	private boolean aimAtPlayer;
@@ -9,7 +9,7 @@ public class Action {
 	private long delay;
 	private long loopDelay;
 
-	public Action(long time, double dx, double dy, boolean shoot, boolean fireAtPlayer, Coordinate targetCoo, boolean repeat, long repeatDelay) {
+	public Action(long time, int dx, int dy, boolean shoot, boolean fireAtPlayer, Coordinate targetCoo, boolean repeat, long repeatDelay) {
 		xVelocity = dx;
 		yVelocity = dy;
 		fire = shoot;
@@ -19,10 +19,10 @@ public class Action {
 		aimAtPlayer = fireAtPlayer;
 		target = targetCoo;
 	}
-	public double getXVelocity() {
+	public int getXVelocity() {
 		return xVelocity;
 	}
-	public double getYVelocity() {
+	public int getYVelocity() {
 		return yVelocity;
 	}
 	public boolean getFire() {
@@ -42,5 +42,8 @@ public class Action {
 	}
 	public Coordinate getTargetCoordinate() {
 		return target;
+	}
+	public Action generateLoopedCopy() {
+		return new Action(delay+loopDelay, xVelocity, yVelocity, fire, aimAtPlayer, target, true, loopDelay);
 	}
 }
