@@ -1,31 +1,35 @@
 import java.util.ArrayList;
 
-public class Enemy extends Plane{
+public class Enemy extends Thing{
 	private long initialTime;
 	private int health;
-	private int width;
-	private int height;
 	private Powerup powerup;
 	private ArrayList<Action> actions;
 	
-	public Enemy(int width, int height, int health, ArrayList<Action> actions){
+	public Enemy(Coordinate coordinate, int width, int height, int health, ArrayList<Action> actions){
 		this.health = health;
 		this.actions = actions;
-		this.width = width;
-		this.height = height;
 		this.powerup = null;
+		setCoordinate(coordinate);
+		setHitbox(new Hitbox(coordinate, width, height));
+		setWidth(width);
+		setHeight(height);
+		setXVelocity(0);
+		setYVelocity(0);
 	}
-	public Enemy(int width, int height, int health, ArrayList<Action> actions, Powerup powerupDrop){
+	public Enemy(Coordinate coordinate, int width, int height, int health, ArrayList<Action> actions, Powerup powerupDrop){
 		this.health = health;
 		this.actions = actions;
-		this.width = width;
-		this.height = height;
 		this.powerup = powerupDrop;
+		setCoordinate(coordinate);
+		setHitbox(new Hitbox(coordinate, width, height));
+		setWidth(width);
+		setHeight(height);
+		setXVelocity(0);
+		setYVelocity(0);
 	}
 	
 	public ArrayList<Action> getActions(){return actions;}
-	public int getWidth() {return width;}
-	public int getHeight() {return height;}
 	public long getInitialTime(){return initialTime;}
 	public void setInitialTime(long initialTime){this.initialTime = initialTime;}
 	public int getHealth(){return health;}
