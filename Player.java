@@ -1,8 +1,15 @@
-
-public class Player extends Plane{
+public class Player extends Thing{
 	private boolean hittable;
+	
+	public Player() {
+		setCoordinate(new Coordinate(400, 100));
+		setXVelocity(0);
+		setYVelocity(0);
+		setWidth(30);
+		setHeight(30);
+		setHitbox(new Hitbox(new Coordinate(400, 100), 30, 30));
+	}
 	
 	public boolean isHittable(){return hittable;}
 	public void setHittable(boolean hittable){this.hittable = hittable;}
-	
 }
