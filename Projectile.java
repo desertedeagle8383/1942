@@ -13,16 +13,19 @@ public class Projectile extends Thing{
 		} else {
 			angle = Math.atan((targetCoordinate.getY() - coordinate.getY())/(targetCoordinate.getX() - coordinate.getX()));
 		}
-		this.setCoordinate(coordinate);
-		this.setXVelocity((int) (450*Math.cos(angle)));
-		this.setYVelocity((int) (450*Math.sin(angle)));
+		setCoordinate(coordinate);
+		setXVelocity((int) (10*Math.cos(angle)));
+		setYVelocity((int) (10*Math.sin(angle)));
+		setWidth(5);
+		setHeight(5);
+		setHitbox(new Hitbox(coordinate, 5, 5));
 	}
 	
 	public Projectile(boolean enemy, Coordinate coordinate) {
-		enemyProjectile = enemy;
+		enemyProjectile = false;
 		this.setCoordinate(coordinate);
 		this.setXVelocity(0);
-		this.setYVelocity(450);
+		this.setYVelocity(10);
 	}
 	
 	public boolean isEnemyProjectile() {
