@@ -1,19 +1,13 @@
 import java.awt.Image;
 
 public abstract class Powerup extends Thing{
-	private Hitbox hitbox;
-	private String filePath = "";
-	private Coordinate coordinate;
 	
 	public Powerup(Coordinate coordinate, Hitbox hitbox){
-		this.coordinate = coordinate;
-		this.hitbox = hitbox; 
-		setImage(filePath);
+		setHitbox(new Hitbox(coordinate, 20, 20));
+		setCoordinate(coordinate);
+		setXVelocity(0);
+		setYVelocity(5);
+		setWidth(20);
+		setHeight(20);
 	}
-	
-	public Coordinate getCoordinate(){return coordinate;}
-	public Hitbox getHitbox(){return hitbox;}
-	public void setCoordinate(Coordinate newCoordinate){coordinate = newCoordinate;}
-	public void setHitbox(Hitbox newHitbox){hitbox = newHitbox;}
-	
 }
