@@ -6,6 +6,8 @@ public class Grid {
 	private ArrayList<Enemy> enemies;
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Powerup> powerups;
+	private ArrayList<Projectile> enemyProjectiles;
+	private ArrayList<Projectile> friendlyProjectiles;
 	private Player player;
 
 	public Grid(int width, int height){
@@ -27,14 +29,26 @@ public class Grid {
 	}
 	public void addProjectile(Projectile projectile){
 		projectiles.add(projectile);
+		if (projectile.isEnemyProjectile()) {
+			enemyProjectiles.add(projectile);
+		} else {
+			friendlyProjectiles.add(projectile);
+		}
 	}
 	public void removeProjectile(Projectile projectile){
 		projectiles.remove(projectile);
+		if (projectile.isEnemyProjectile()) {
+			enemyProjectiles.remove(projectile);
+		} else {
+			friendlyProjectiles.remove(projectile);
+		}
 	}
 	public int getWidth(){return width;}
 	public int getHeight(){return height;}
 	public ArrayList<Enemy> getEnemies(){return enemies;}
 	public ArrayList<Projectile> getProjectiles(){return projectiles;}
+	public ArrayList<Projectile> getEnemyProjectiles(){return enemyProjectiles;}
+	public ArrayList<Projectile> getFriendlyProjectiles(){return friendlyProjectiles;}
 	public ArrayList<Powerup> getPowerups(){return powerups;}
 	public void createPlayer(){
 		player = new Player();
