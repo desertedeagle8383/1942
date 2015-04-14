@@ -45,25 +45,38 @@ public class Game{
 	public void nextFrame(long initialTime){
 		long elapsedTime = System.currentTimeMillis() - initialTime;
 		Player player = grid.getPlayer();
+		Level level = levels.get(currentLevel);
+		ArrayList<Long> times = level.getEnemySpawnTimes();
+		ArrayList<Enemy> enemies = level.getEnemies();
+		for (int i = 0; i < times.size(); i++) {
+			long currentTime = times.get(i);
+			if (currentTime < elapsedTime && currentTime > elapsedTime - 30) {
+				grid.addEnemy(enemies.get(i));
+			}
+		}
+
+		for (int i = 0; i < grid.getPowerups().size(); i++) {
+			Powerup currentPowerup = grid.getPowerups().get(i);
+			Coordinate lastCoo = currentPowerup.getCoordinate();
+			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentPowerup.getXVelocity()), (int) (lastCoo.getY() + currentPowerup.getYVelocity()));
+			if (newCoo.getY() < 0 && newCoo.getY() + currentPowerup.getHeight() > grid.getHeight())
+				grid.removePowerup(currentPowerup);
+			else {
+				currentPowerup.setCoordinate(new Coordinate((int) (lastCoo.getX()), (int) (lastCoo.getY() + currentPowerup.getYVelocity())));
+				currentPowerup.getHitbox().setCoordinate(newCoo);
+			}
+		}
 
 		for (int i = 0; i < grid.getProjectiles().size(); i++) {
 			Projectile currentProjectile = grid.getProjectiles().get(i);
 			Coordinate lastCoo = currentProjectile.getCoordinate();
 			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
-			if (newCoo.getX() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() > grid.getHeight())
+			if (newCoo.getX() + currentProjectile.getWidth() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() + currentProjectile.getHeight() > grid.getHeight())
 				grid.removeProjectile(currentProjectile);
-			else
+			else {
 				currentProjectile.setCoordinate(new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity())));
-		}
-		
-		for (int i = 0; i < grid.getProjectiles().size(); i++) {
-			Projectile currentProjectile = grid.getProjectiles().get(i);
-			Coordinate lastCoo = currentProjectile.getCoordinate();
-			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
-			if (newCoo.getX() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() > grid.getHeight())
-				grid.removeProjectile(currentProjectile);
-			else
-				currentProjectile.setCoordinate(new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity())));
+				currentProjectile.getHitbox().setCoordinate(newCoo);
+			}
 		}
 
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
@@ -75,12 +88,6 @@ public class Game{
 				if (delay < elapsedTime && delay > elapsedTime - 30) {
 					currentEnemy.setXVelocity(currentAction.getXVelocity());
 					currentEnemy.setYVelocity(currentAction.getYVelocity());
-				}
-				Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
-				if (newCoo.getX() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() > grid.getHeight()) {
-					grid.removeEnemy(currentEnemy);
-				} else {
-					currentEnemy.setCoordinate(newCoo);
 					if (currentAction.getFire())
 						if (currentAction.aimsAtPlayer()) 
 							grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), player.getCoordinate()));
@@ -90,19 +97,35 @@ public class Game{
 						currentEnemy.getActions().add(currentAction.generateLoopedCopy());
 					}
 				}
+				Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
+				if (newCoo.getX() + currentEnemy.getWidth() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() + currentEnemy.getHeight() > grid.getHeight()) {
+					grid.removeEnemy(currentEnemy);
+				} else {
+					currentEnemy.setCoordinate(newCoo);
+					currentEnemy.getHitbox().setCoordinate(newCoo);
+				}
+				Coordinate playerCoo = player.getCoordinate();
+				int netX = 0;
+				int netY = 0;
+				if (left)
+					netX -= 10;
+				if (right)
+					netX += 10;
+				if (up)
+					netY += 10;
+				if (down)
+					netY -= 10;
+				player.setCoordinate(new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY));
+				currentEnemy.getHitbox().setCoordinate(newCoo);
 			}
-			Coordinate playerCoo = player.getCoordinate();
-			int netX = 0;
-			int netY = 0;
-			if (left)
-				netX -= 10;
-			if (right)
-				netX += 10;
-			if (up)
-				netY += 10;
-			if (down)
-				netY -= 10;
-			player.setCoordinate(new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY));
+		}
+		if (player.isHittable()) {
+			for (int i = 0; i < grid.getEnemyProjectiles().size(); i++) {
+				Projectile p = grid.getEnemyProjectiles().get(i);
+				if (player.getHitbox().hit(p.getHitbox())) {
+					
+				}
+			}
 		}
 	}
 
