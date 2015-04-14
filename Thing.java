@@ -10,6 +10,7 @@ public abstract class Thing {
 	private int xVelocity;
 	private int yVelocity;
 	private Image image;
+	private Hitbox hitbox;
 
 	public Coordinate getCoordinate(){return currentCoordinate;};
 	public void setCoordinate(Coordinate newCoordinate) {
@@ -19,6 +20,8 @@ public abstract class Thing {
 	public int getYVelocity(){return yVelocity;};
 	public void setXVelocity(int newXVelocity){xVelocity = newXVelocity;}
 	public void setYVelocity(int newYVelocity){yVelocity = newYVelocity;}
+	public void setHitbox(Hitbox hitbox) {this.hitbox = hitbox;}
+	public Hitbox getHitbox() {return hitbox;}
 	//Implement sprites
 	public void setImage(String filePath){
 		try {
