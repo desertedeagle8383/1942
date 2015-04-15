@@ -82,7 +82,7 @@ public class Game{
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
 			Enemy currentEnemy = grid.getEnemies().get(i);
 			Coordinate lastCoo = currentEnemy.getCoordinate();
-			for(int j = 0; j < currentEnemy.getActions().size(); i++) {
+			for(int j = 0; j < currentEnemy.getActions().size(); j++) {
 				Action currentAction = currentEnemy.getActions().get(i);
 				long delay = currentAction.getDelay();
 				if (delay < elapsedTime && delay > elapsedTime - 30) {
@@ -123,7 +123,33 @@ public class Game{
 			for (int i = 0; i < grid.getEnemyProjectiles().size(); i++) {
 				Projectile p = grid.getEnemyProjectiles().get(i);
 				if (player.getHitbox().hit(p.getHitbox())) {
-					
+					death();
+					grid.removeProjectile(p);
+				}
+			}
+			for (int i = 0; i < grid.getEnemies().size(); i++) {
+				Enemy e = grid.getEnemies().get(i);
+				if (player.getHitbox().hit(e.getHitbox())) {
+					grid.removeEnemy(e);
+					death();
+				}
+			}
+		}
+		for (int i = 0; i < grid.getPowerups().size(); i++) {
+			Powerup p = grid.getPowerups().get(i);
+			//Implement powerups
+			if (player.getHitbox().hit(p.getHitbox())) {
+				grid.removePowerup(p);
+			}
+		}
+		for (int i = 0; i < grid.getEnemies().size(); i++) {
+			Enemy e = grid.getEnemies().get(i);
+			for (int j = 0; j < grid.getFriendlyProjectiles().size(); j++) {
+				Projectile p = grid.getFriendlyProjectiles().get(i);
+				if (e.getHitbox().hit(p.getHitbox())) {
+					score += e.getPoints();
+					grid.removeEnemy(e);
+					grid.removeProjectile(p);
 				}
 			}
 		}
@@ -149,21 +175,39 @@ public class Game{
 	}
 
 	public void startGame() {
-		currentLevel = 1;
+		currentLevel += 1;
 		startLevel();
 	}
-
+	
+	//implement
 	private void endLevel() {
 		cancelTasks();
+		currentLevel++;
 	}
 
+	//implement
 	private void endGame() {
 		cancelTasks();
+		System.exit(0);
 	}
 
-	public void cancelTasks(){
+	private void cancelTasks(){
 		timer.cancel();
 		timer.purge();
+	}
+	
+	private void death() {
+		if (lives > 1) {
+			lives--;
+			grid.getPlayer().setHittable(false);
+			timer.schedule(new TimerTask() {
+				public void run() {
+					grid.getPlayer().setHittable(true);
+				}
+			}, 3000);
+		} else {
+			endGame();
+		}
 	}
 
 	public void setLeft(boolean asd) {
