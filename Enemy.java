@@ -5,11 +5,13 @@ public class Enemy extends Thing{
 	private int health;
 	private Powerup powerup;
 	private ArrayList<Action> actions;
+	private int points;
 	
-	public Enemy(Coordinate coordinate, int width, int height, int health, ArrayList<Action> actions){
+	public Enemy(Coordinate coordinate, int width, int height, int health, int points, ArrayList<Action> actions){
 		this.health = health;
 		this.actions = actions;
 		this.powerup = null;
+		this.points = points;
 		setCoordinate(coordinate);
 		setHitbox(new Hitbox(coordinate, width, height));
 		setWidth(width);
@@ -17,10 +19,11 @@ public class Enemy extends Thing{
 		setXVelocity(0);
 		setYVelocity(0);
 	}
-	public Enemy(Coordinate coordinate, int width, int height, int health, ArrayList<Action> actions, Powerup powerupDrop){
+	public Enemy(Coordinate coordinate, int width, int height, int health, int points, ArrayList<Action> actions, Powerup powerupDrop){
 		this.health = health;
 		this.actions = actions;
 		this.powerup = powerupDrop;
+		this.points = points;
 		setCoordinate(coordinate);
 		setHitbox(new Hitbox(coordinate, width, height));
 		setWidth(width);
@@ -29,6 +32,7 @@ public class Enemy extends Thing{
 		setYVelocity(0);
 	}
 	
+	public int getPoints() {return points;}
 	public ArrayList<Action> getActions(){return actions;}
 	public long getInitialTime(){return initialTime;}
 	public void setInitialTime(long initialTime){this.initialTime = initialTime;}
