@@ -139,6 +139,19 @@ public class Game{
 			Powerup p = grid.getPowerups().get(i);
 			//Implement powerups
 			if (player.getHitbox().hit(p.getHitbox())) {
+				if (p.getType() == Powerup.QUAD_GUN) {
+					
+				} else if (p.getType() == Powerup.ENEMY_CRASH) {
+					
+				} else if (p.getType() == Powerup.EXTRA_LIFE) {
+					
+				} else if (p.getType() == Powerup.NO_ENEMY_BULLETS) {
+					
+				} else if (p.getType() == Powerup.EXTRA_LOOP) {
+					
+				} else if (p.getType() == Powerup.THOUSAND_POINTS) {
+					
+				}
 				grid.removePowerup(p);
 			}
 		}
