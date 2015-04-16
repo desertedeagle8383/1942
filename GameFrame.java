@@ -13,13 +13,13 @@ public class GameFrame extends JFrame{
 	private GamePanel gamePanel;
 	private JLabel scoreLabel, livesLabel, rollsLabel;
 	private JPanel contentPane, labels;
-	public GameFrame(Game game){
+	public GameFrame(Game game, GamePanel panel){
 		this.game = game;
-				
+		this.gamePanel = panel;
+		
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		
-		gamePanel = new GamePanel(game.getGrid());
 		gamePanel.addKeyListener(new GameKeyListener());
 		gamePanel.setFocusable(true);
 		labels = new JPanel();
@@ -79,8 +79,9 @@ public class GameFrame extends JFrame{
 
 	public static void main(String args[]){
 		Grid grid = new Grid(800, 750);
-		Game game = new Game(grid);
-		GameFrame frame = new GameFrame(game);
+		GamePanel gamePanel = new GamePanel(grid);
+		Game game = new Game(grid, gamePanel);
+		GameFrame frame = new GameFrame(game, gamePanel);
 	
 	}
 }
