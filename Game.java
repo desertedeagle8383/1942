@@ -27,6 +27,11 @@ public class Game{
 		lives = 3;
 		rolls = 2;
 		grid.createPlayer();
+		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		ArrayList<Long> times = new ArrayList<Long>();
+		Level testLevel = new Level(enemies, times, 9999999);
+		levels = new ArrayList<Level>();
+		levels.add(testLevel);
 	}
 
 	public int getScore(){return score;}
