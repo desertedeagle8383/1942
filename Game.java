@@ -17,8 +17,9 @@ public class Game{
 	private boolean right;
 	private boolean up;
 	private boolean down;
+	private GamePanel gamePanel;
 
-	public Game(Grid grid){
+	public Game(Grid grid, GamePanel panel){
 		up = false;
 		down = false;
 		left = false;
@@ -26,6 +27,7 @@ public class Game{
 		score = 0;
 		lives = 3;
 		rolls = 2;
+		gamePanel = panel;
 		grid.createPlayer();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		ArrayList<Long> times = new ArrayList<Long>();
@@ -171,6 +173,7 @@ public class Game{
 				}
 			}
 		}
+		gamePanel.updatePanel(grid);
 	}
 
 	public void startLevel(){
