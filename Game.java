@@ -36,9 +36,7 @@ public class Game{
 	public Grid getGrid(){return grid;}
 
 	public void shoot(){
-		Projectile newProjectile = new Projectile(false, grid.getPlayer().getCoordinate());
-		newProjectile.setXVelocity(0);
-		newProjectile.setYVelocity(10);
+		Projectile newProjectile = new Projectile(false, new Coordinate(grid.getPlayer().getCoordinate().getX() + 13, grid.getPlayer().getCoordinate().getY()));
 		grid.addProjectile(newProjectile);
 	}
 
@@ -70,6 +68,7 @@ public class Game{
 
 		for (int i = 0; i < grid.getProjectiles().size(); i++) {
 			Projectile currentProjectile = grid.getProjectiles().get(i);
+			System.out.println(currentProjectile.getHitbox().getHeight());
 			Coordinate lastCoo = currentProjectile.getCoordinate();
 			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
 			if (newCoo.getX() + currentProjectile.getWidth() < 0 && newCoo.getX() > grid.getWidth() && newCoo.getY() < 0 && newCoo.getY() + currentProjectile.getHeight() > grid.getHeight())
@@ -105,25 +104,27 @@ public class Game{
 					currentEnemy.setCoordinate(newCoo);
 					currentEnemy.getHitbox().setCoordinate(newCoo);
 				}
-				Coordinate playerCoo = player.getCoordinate();
-				int netX = 0;
-				int netY = 0;
-				if (left)
-					netX -= 10;
-				if (right)
-					netX += 10;
-				if (up)
-					netY += 10;
-				if (down)
-					netY -= 10;
-				player.setCoordinate(new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY));
-				currentEnemy.getHitbox().setCoordinate(newCoo);
 			}
 		}
 		
+		Coordinate playerCoo = player.getCoordinate();
+		int netX = 0;
+		int netY = 0;
+		if (left)
+			netX -= 10;
+		if (right)
+			netX += 10;
+		if (up)
+			netY += 10;
+		if (down)
+			netY -= 10;
+		Coordinate newCoo = new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY);
+		player.setCoordinate(newCoo);
+		player.getHitbox().setCoordinate(newCoo);
+		
 //		System.out.println(player.getCoordinate().getX() + ", " + player.getCoordinate().getY());
 //		System.out.println(grid.getPlayer().getCoordinate().getX() + ", " + grid.getPlayer().getCoordinate().getY());
-		System.out.println(left);
+//		System.out.println(left);
 		
 		if (player.isHittable()) {
 			for (int i = 0; i < grid.getEnemyProjectiles().size(); i++) {
