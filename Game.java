@@ -20,20 +20,13 @@ public class Game{
 	private GamePanel gamePanel;
 
 	public Game(Grid grid, GamePanel panel){
-		up = false;
-		down = false;
-		left = false;
-		right = false;
-		score = 0;
-		lives = 3;
-		rolls = 2;
 		gamePanel = panel;
-		grid.createPlayer();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		ArrayList<Long> times = new ArrayList<Long>();
 		Level testLevel = new Level(enemies, times, 9999999);
 		levels = new ArrayList<Level>();
 		levels.add(testLevel);
+		this.grid = grid;
 	}
 
 	public int getScore(){return score;}
@@ -51,6 +44,7 @@ public class Game{
 
 	public void nextFrame(long initialTime){
 		long elapsedTime = System.currentTimeMillis() - initialTime;
+//		System.out.println(elapsedTime);
 		Player player = grid.getPlayer();
 		Level level = levels.get(currentLevel);
 		ArrayList<Long> times = level.getEnemySpawnTimes();
@@ -126,6 +120,11 @@ public class Game{
 				currentEnemy.getHitbox().setCoordinate(newCoo);
 			}
 		}
+		
+//		System.out.println(player.getCoordinate().getX() + ", " + player.getCoordinate().getY());
+//		System.out.println(grid.getPlayer().getCoordinate().getX() + ", " + grid.getPlayer().getCoordinate().getY());
+		System.out.println(left);
+		
 		if (player.isHittable()) {
 			for (int i = 0; i < grid.getEnemyProjectiles().size(); i++) {
 				Projectile p = grid.getEnemyProjectiles().get(i);
@@ -176,7 +175,8 @@ public class Game{
 		gamePanel.updatePanel(grid);
 	}
 
-	public void startLevel(){
+	private void startLevel(){
+//		System.out.println("currentLevel < levels.size(): " + (currentLevel < levels.size()));
 		if (currentLevel < levels.size()) {
 			initialTime = System.currentTimeMillis();
 			timer = new Timer();
@@ -187,6 +187,7 @@ public class Game{
 			}, new Date(initialTime + levels.get(currentLevel).getLevelLength()));
 			timer.scheduleAtFixedRate(new TimerTask() {
 				public void run() {
+//					System.out.println("Timer iteration");
 					nextFrame(initialTime);
 				}
 			}, new Date(initialTime + 3000), 30);
@@ -196,7 +197,16 @@ public class Game{
 	}
 
 	public void startGame() {
-		currentLevel += 1;
+//		System.out.println("game started");
+		up = false;
+		down = false;
+		left = false;
+		right = false;
+		score = 0;
+		lives = 3;
+		rolls = 2;
+		grid.createPlayer();
+		currentLevel = 0;
 		startLevel();
 	}
 	
@@ -204,11 +214,13 @@ public class Game{
 	private void endLevel() {
 		cancelTasks();
 		currentLevel++;
+//		System.out.println("level ended");
 	}
 
 	//implement
 	private void endGame() {
 		cancelTasks();
+//		System.out.println("game ended");
 		System.exit(0);
 	}
 
