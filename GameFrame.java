@@ -1,14 +1,18 @@
+// KEYBINDINGS, WINDOWCLOSING
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-public class GameFrame extends JFrame{
+public class GameFrame extends JFrame implements WindowListener{
 	private Game game;
 	private GamePanel gamePanel;
 	private JLabel scoreLabel, livesLabel, rollsLabel;
@@ -16,20 +20,20 @@ public class GameFrame extends JFrame{
 	public GameFrame(Game game, GamePanel panel){
 		this.game = game;
 		this.gamePanel = panel;
-		
+
 		contentPane = new JPanel();
 		setContentPane(contentPane);
-		
+
 		gamePanel.addKeyListener(new GameKeyListener());
 		gamePanel.setFocusable(true);
 		labels = new JPanel();
-		
+
 		gamePanel.setPreferredSize(new Dimension(800, 750));
 		labels.setPreferredSize(new Dimension (800, 50));
-		
+
 		contentPane.add(labels);
 		contentPane.add(gamePanel);
-		
+
 		scoreLabel = new JLabel(Integer.toString(game.getScore()));
 		livesLabel = new JLabel(Integer.toString(game.getLives()));
 		rollsLabel = new JLabel(Integer.toString(game.getRolls()));
@@ -39,10 +43,10 @@ public class GameFrame extends JFrame{
 
 		setSize(800, 800);
 		setVisible(true);
-		
+
 	}
 	public void initializeGUI(){
-		
+
 	}
 	public void updateLabels(){
 		scoreLabel.setText(Integer.toString(game.getScore()));
@@ -82,6 +86,27 @@ public class GameFrame extends JFrame{
 		GamePanel gamePanel = new GamePanel(grid);
 		Game game = new Game(grid, gamePanel);
 		GameFrame frame = new GameFrame(game, gamePanel);
-	
+
+	}
+	public void windowActivated(WindowEvent arg0) {
+		
+	}
+	public void windowClosed(WindowEvent arg0) {
+		
+	}
+	public void windowClosing(WindowEvent arg0) {
+		
+	}
+	public void windowDeactivated(WindowEvent arg0) {
+		
+	}
+	public void windowDeiconified(WindowEvent arg0) {
+		
+	}
+	public void windowIconified(WindowEvent arg0) {
+		
+	}
+	public void windowOpened(WindowEvent arg0) {
+		
 	}
 }
