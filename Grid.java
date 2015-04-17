@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 public class Grid {
 	private int width;
 	private int height;
@@ -9,12 +8,16 @@ public class Grid {
 	private ArrayList<Projectile> enemyProjectiles;
 	private ArrayList<Projectile> friendlyProjectiles;
 	private Player player;
-
 	public Grid(int width, int height){
+		player = new Player();
 		this.width = width;
 		this.height = height;
+		enemies = new ArrayList<Enemy>();
+		projectiles = new ArrayList<Projectile>();
+		powerups = new ArrayList<Powerup>();
+		enemyProjectiles = new ArrayList<Projectile>();
+		friendlyProjectiles = new ArrayList<Projectile>();
 	}
-
 	public void addPowerup(Powerup powerup){
 		powerups.add(powerup);
 	}
@@ -50,8 +53,5 @@ public class Grid {
 	public ArrayList<Projectile> getEnemyProjectiles(){return enemyProjectiles;}
 	public ArrayList<Projectile> getFriendlyProjectiles(){return friendlyProjectiles;}
 	public ArrayList<Powerup> getPowerups(){return powerups;}
-	public void createPlayer(){
-		player = new Player();
-	}
 	public Player getPlayer(){return player;}
 }
