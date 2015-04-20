@@ -13,15 +13,13 @@ public class Game{
 	private Grid grid;
 	private Timer timer;
 	private ArrayList<Level> levels;
-	private boolean left;
-	private boolean right;
-	private boolean up;
-	private boolean down;
-	private GamePanel gamePanel;
+	private boolean shoot;
+	private GameFrame gameFrame;
 
-	public Game(Grid grid, GamePanel panel){
-		gamePanel = panel;
+	public Game(GameFrame frame, Grid grid){
+		gameFrame = frame;
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		
 		ArrayList<Long> times = new ArrayList<Long>();
 		Level testLevel = new Level(enemies, times, 9999999);
 		levels = new ArrayList<Level>();
@@ -36,8 +34,19 @@ public class Game{
 	public Grid getGrid(){return grid;}
 
 	public void shoot(){
-		Projectile newProjectile = new Projectile(false, new Coordinate(grid.getPlayer().getCoordinate().getX() + 13, grid.getPlayer().getCoordinate().getY()));
-		grid.addProjectile(newProjectile);
+		if (shoot) {
+			Projectile newProjectile = new Projectile(new Coordinate(grid.getPlayer().getCoordinate().getX() + 13, grid.getPlayer().getCoordinate().getY()));
+			grid.addProjectile(newProjectile);
+			shoot = false;
+			timer.schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					shoot = true;
+				}
+				
+			}, 100);
+		}
 	}
 
 	public void nextFrame(long initialTime){
@@ -110,15 +119,25 @@ public class Game{
 		Coordinate playerCoo = player.getCoordinate();
 		int netX = 0;
 		int netY = 0;
-		if (left)
+		if (gameFrame.getLeft())
 			netX -= 10;
-		if (right)
+		if (gameFrame.getRight())
 			netX += 10;
-		if (up)
+		if (gameFrame.getUp())
 			netY += 10;
-		if (down)
+		if (gameFrame.getDown())
 			netY -= 10;
+		if (gameFrame.getSpace())
+			shoot();
 		Coordinate newCoo = new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY);
+		if (newCoo.getX() < 0)
+			newCoo.setX(0);
+		if (newCoo.getX() > grid.getWidth() - player.getWidth())
+			newCoo.setX(grid.getWidth() - player.getWidth());
+		if (newCoo.getY() < player.getHeight())
+			newCoo.setY(player.getHeight());
+		if (newCoo.getY() > grid.getHeight())
+			newCoo.setY(grid.getHeight());
 		player.setCoordinate(newCoo);
 		player.getHitbox().setCoordinate(newCoo);
 		
@@ -173,11 +192,12 @@ public class Game{
 				}
 			}
 		}
-		gamePanel.updatePanel(grid);
+		gameFrame.updateFrame(grid, score, lives, rolls);
 	}
 
 	private void startLevel(){
 //		System.out.println("currentLevel < levels.size(): " + (currentLevel < levels.size()));
+		shoot = true;
 		if (currentLevel < levels.size()) {
 			initialTime = System.currentTimeMillis();
 			timer = new Timer();
@@ -199,10 +219,6 @@ public class Game{
 
 	public void startGame() {
 //		System.out.println("game started");
-		up = false;
-		down = false;
-		left = false;
-		right = false;
 		score = 0;
 		lives = 3;
 		rolls = 2;
@@ -244,17 +260,11 @@ public class Game{
 		}
 	}
 
-	public void setLeft(boolean asd) {
-		left = asd;
+	public static void main(String args[]){
+		Grid grid = new Grid(800, 750);
+		GamePanel gamePanel = new GamePanel();
+		GameFrame frame = new GameFrame(gamePanel);
+		Game game = new Game(frame, grid);
+		game.startGame();
 	}
-	public void setRight(boolean asd) {
-		right = asd;
-	}
-	public void setUp(boolean asd) {
-		up = asd;
-	}
-	public void setDown(boolean asd) {
-		down = asd;
-	}
-
 }
