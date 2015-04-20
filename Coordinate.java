@@ -1,12 +1,12 @@
 public class Coordinate {
-	double x, y;
+	private int x, y;
 	
-	public Coordinate(double x, double y){
+	public Coordinate(int x, int y){
 		this.x = x;
 		this.y = y; 
 	}
 	public int getX(){return (int)x;}
 	public int getY(){return (int)y;}
-	public void setX(double newX){x = newX;}
-	public void setY(double newY){y = newY;}
+	public void setX(int newX){x = newX;}
+	public void setY(int newY){y = newY;}
 }
