@@ -42,5 +42,4 @@ public abstract class Thing {
 	public void setWidth(int width) {
 		this.width = width;
 	}
-	
 }
