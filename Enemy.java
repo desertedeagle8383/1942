@@ -6,7 +6,7 @@ public class Enemy extends Thing {
 	private Powerup powerup;
 	private ArrayList<Action> actions;
 	private int points;
-	private String filePath = "Z:\\My Documents\\1942\\src\\Enemy.png";
+	private String filePath = "Z:\\programming\\workspace2\\1942\\src\\Enemy.png";
 	public Enemy(Coordinate coordinate, int width, int height, int health, int points, ArrayList<Action> actions){
 		this.health = health;
 		this.actions = actions;
