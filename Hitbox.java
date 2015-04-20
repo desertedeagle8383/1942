@@ -31,11 +31,8 @@ public class Hitbox {
 	}
 	
 	public boolean hit(Hitbox hitbox){
-		// size of enemy image -> 30 x 30 pixels, size of projectile -> 10 x 10
-		
 		Rectangle box1 = getRectangle();
 		Rectangle box2 = new Rectangle(hitbox.getCoordinate().getX(), hitbox.getCoordinate().getY(), hitbox.getWidth(), hitbox.getHeight());
-
 		return box1.intersects(box2);
 	}
 }
