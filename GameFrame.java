@@ -13,8 +13,14 @@ public class GameFrame extends JFrame{
 	private GamePanel gamePanel;
 	private JLabel scoreLabel, livesLabel, rollsLabel;
 	private JPanel contentPane, labels;
-	public GameFrame(Game game, GamePanel panel){
-		this.game = game;
+	private boolean up, down, left, right, space;
+	public GameFrame(GamePanel panel){
+		up = false;
+		down = false;
+		left = false;
+		right = false;
+		space = false;
+		
 		this.gamePanel = panel;
 		
 		contentPane = new JPanel();
@@ -30,14 +36,14 @@ public class GameFrame extends JFrame{
 		contentPane.add(labels);
 		contentPane.add(gamePanel);
 		
-		scoreLabel = new JLabel(Integer.toString(game.getScore()));
-		livesLabel = new JLabel(Integer.toString(game.getLives()));
-		rollsLabel = new JLabel(Integer.toString(game.getRolls()));
+		scoreLabel = new JLabel();
+		livesLabel = new JLabel();
+		rollsLabel = new JLabel();
 		labels.add(scoreLabel);
 		labels.add(livesLabel);
 		labels.add(rollsLabel);
 
-		setSize(800, 800);
+		setSize(900, 850);
 		setVisible(true);
 	}
 	
@@ -49,40 +55,55 @@ public class GameFrame extends JFrame{
 	private class GameKeyListener implements KeyListener{
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_LEFT){
-				game.setLeft(true);
+				left = true;
 //				System.out.println("left");
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-				game.setRight(true);
+				right = true;
 //				System.out.println("right");
 			} else if (e.getKeyCode() == KeyEvent.VK_UP){
-				game.setUp(true);
+				up = true;
 //				System.out.println("up");
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
-				game.setDown(true);
+				down = true;
 //				System.out.println("down");
 			} else if (e.getKeyCode() == KeyEvent.VK_SPACE){
-				game.shoot();
+				space = true;
 			}
 		}
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_LEFT){
-				game.setLeft(false);
+				left = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-				game.setRight(false);
+				right = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_UP){
-				game.setUp(false);
+				up = false;
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN){
-				game.setDown(false);
+				down = false;
+			} else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				space = false;
 			}
 		}
 		public void keyTyped(KeyEvent arg0) {}
 	}
-
-	public static void main(String args[]){
-		Grid grid = new Grid(800, 750);
-		GamePanel gamePanel = new GamePanel();
-		Game game = new Game(grid, gamePanel);
-		GameFrame frame = new GameFrame(game, gamePanel);
-		game.startGame();
+	public boolean getLeft() {
+		return left;
+	}
+	public boolean getRight() {
+		return right;
+	}
+	public boolean getUp() {
+		return up;
+	}
+	public boolean getDown() {
+		return down;
+	}
+	public boolean getSpace() {
+		return space;
+	}
+	public void updateFrame(Grid g, int score, int lives, int rolls) {
+		gamePanel.updatePanel(g);
+		scoreLabel.setText("Score: " + score);
+		rollsLabel.setText("Rolls: " + rolls);
+		livesLabel.setText("Lives: " + lives);
 	}
 }
