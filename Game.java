@@ -153,7 +153,8 @@ public class Game{
 			netY += 10;
 		if (gameFrame.getDown())
 			netY -= 10;
-		if (gameFrame.getSpace())
+//		System.out.println(gameFrame.getAlt());
+		if (gameFrame.getAlt())
 			shoot();
 		Coordinate newCoo = new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY);
 		if (newCoo.getX() < 0)
