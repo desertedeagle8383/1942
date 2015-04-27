@@ -18,26 +18,22 @@ public class Game{
 
 	public Game(GameFrame frame, Grid grid){
 		gameFrame = frame;
-		
-		Action a1 = new Action(1000, -20, -20, false, false, null, false, 0);
-		Action a2 = new Action(1000, -20, -20, true, true, null, true, 1000);
-		Action a3 = new Action(5000, -20, 0, false, false, null, false, 0);
-		Action a4 = new Action(10000, -20, 20, false, false, null, false, 0);
-		
+
+		//		Action a2 = new Action(1000, -20, -20, true, true, null, true, 1000);
+		//		Action a3 = new Action(5000, -20, 0, false, false, null, false, 0);
+		//		Action a4 = new Action(10000, -20, 20, false, false, null, false, 0);
+
 		ArrayList<Action> acts1 = new ArrayList<Action>();
-		acts1.add(a1);
-		acts1.add(a2);
-		acts1.add(a3);
-		acts1.add(a4);
-		
-		Enemy e1 = new Enemy(new Coordinate(grid.getWidth() - 30, grid.getHeight() - 30), 30, 30, 1, 500, acts1);
-		
-		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-		enemies.add(e1);
-		
+		//		acts1.add(a2);
+		//		acts1.add(a3);
+		//		acts1.add(a4);
 		ArrayList<Long> times = new ArrayList<Long>();
-		
-		times.add(new Long(5000));
+		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		for (int i = 0; i < 20; i++) {
+			Enemy e1 = new Enemy(new Coordinate(30*i, 400), 30, 30, 0, 0, 5000, 500, acts1);
+			enemies.add(e1);
+			times.add(new Long(1000));
+		}
 		
 		Level testLevel = new Level(enemies, times, 9999999);
 		levels = new ArrayList<Level>();
@@ -62,23 +58,25 @@ public class Game{
 				public void run() {
 					shoot = true;
 				}
-				
+
 			}, 100);
 		}
 	}
 
 	public void nextFrame(long initialTime){
 		long elapsedTime = System.currentTimeMillis() - initialTime;
-//		System.out.println(elapsedTime);
+		//		System.out.println(elapsedTime);
 		Player player = grid.getPlayer();
 		Level level = levels.get(currentLevel);
 		ArrayList<Long> times = level.getEnemySpawnTimes();
 		ArrayList<Enemy> enemies = level.getEnemies();
 		for (int i = 0; i < times.size(); i++) {
 			long currentTime = times.get(i);
-			if (currentTime < elapsedTime && currentTime > elapsedTime - 30) {
-//				System.out.println("Enemy added: " + enemies.get(i).getCoordinate());
+			if (currentTime < elapsedTime) {
+				//				System.out.println("Enemy added: " + enemies.get(i).getCoordinate());
 				grid.addEnemy(enemies.get(i));
+				enemies.remove(i);
+				times.remove(i);
 			}
 		}
 
@@ -96,7 +94,7 @@ public class Game{
 
 		for (int i = 0; i < grid.getProjectiles().size(); i++) {
 			Projectile currentProjectile = grid.getProjectiles().get(i);
-//			System.out.println(currentProjectile.getHitbox().getHeight());
+			//			System.out.println(currentProjectile.getHitbox().getHeight());
 			Coordinate lastCoo = currentProjectile.getCoordinate();
 			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
 			if (newCoo.getX() + currentProjectile.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentProjectile.getHeight() > grid.getHeight())
@@ -108,40 +106,47 @@ public class Game{
 		}
 
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
+//			System.out.println("loop");
 			Enemy currentEnemy = grid.getEnemies().get(i);
-			Coordinate lastCoo = currentEnemy.getCoordinate();
-			for(int j = 0; j < currentEnemy.getActions().size(); j++) {
-				Action currentAction = currentEnemy.getActions().get(i);
-				long delay = currentAction.getDelay();
-				if (delay < elapsedTime && delay > elapsedTime - 30) {
-					System.out.println("Action: " + i);
-					System.out.println("X Velocity: " + currentAction.getXVelocity());
-					System.out.println("Y Velocity: " + currentAction.getYVelocity());
-					System.out.println("Shoot: " + currentAction.getFire());
-					System.out.println("Fires At Player: " + currentAction.aimsAtPlayer());
-					System.out.println("Loops: " + currentAction.getLoop());
-					currentEnemy.setXVelocity(currentAction.getXVelocity());
-					currentEnemy.setYVelocity(currentAction.getYVelocity());
-					if (currentAction.getFire())
-						if (currentAction.aimsAtPlayer()) 
-							grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), player.getCoordinate()));
-						else
-							grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getTargetCoordinate()));
-					if (currentAction.getLoop()) {
-						currentEnemy.getActions().add(currentAction.generateLoopedCopy());
+//			System.out.println(currentEnemy.getHealth());
+			if (currentEnemy.isAlive()) {
+				Coordinate lastCoo = currentEnemy.getCoordinate();
+				for(int j = 0; j < currentEnemy.getActions().size(); j++) {
+					Action currentAction = currentEnemy.getActions().get(i);
+					long delay = currentAction.getDelay();
+					if (delay < elapsedTime && delay > elapsedTime - 30) {
+						System.out.println("Action: " + i);
+						System.out.println("X Velocity: " + currentAction.getXVelocity());
+						System.out.println("Y Velocity: " + currentAction.getYVelocity());
+						System.out.println("Shoot: " + currentAction.getFire());
+						System.out.println("Fires At Player: " + currentAction.aimsAtPlayer());
+						System.out.println("Loops: " + currentAction.getLoop());
+						currentEnemy.setXVelocity(currentAction.getXVelocity());
+						currentEnemy.setYVelocity(currentAction.getYVelocity());
+						if (currentAction.getFire())
+							if (currentAction.aimsAtPlayer()) 
+								grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), player.getCoordinate()));
+							else
+								grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getTargetCoordinate()));
+						if (currentAction.getLoop()) {
+							currentEnemy.getActions().add(currentAction.generateLoopedCopy());
+						}
+					}
+					Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
+					if (newCoo.getX() + currentEnemy.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentEnemy.getHeight() > grid.getHeight()) {
+						grid.removeEnemy(currentEnemy);
+					} else {
+						//					System.out.println(newCoo);
+						currentEnemy.setCoordinate(newCoo);
+						currentEnemy.getHitbox().setCoordinate(newCoo);
 					}
 				}
-				Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
-				if (newCoo.getX() + currentEnemy.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentEnemy.getHeight() > grid.getHeight()) {
-					grid.removeEnemy(currentEnemy);
-				} else {
-//					System.out.println(newCoo);
-					currentEnemy.setCoordinate(newCoo);
-					currentEnemy.getHitbox().setCoordinate(newCoo);
-				}
+			} else {
+//				System.out.println("removed");
+				grid.removeEnemy(currentEnemy);
 			}
 		}
-		
+
 		Coordinate playerCoo = player.getCoordinate();
 		int netX = 0;
 		int netY = 0;
@@ -153,7 +158,7 @@ public class Game{
 			netY += 10;
 		if (gameFrame.getDown())
 			netY -= 10;
-//		System.out.println(gameFrame.getAlt());
+		//		System.out.println(gameFrame.getAlt());
 		if (gameFrame.getShift())
 			shoot();
 		Coordinate newCoo = new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY);
@@ -167,11 +172,11 @@ public class Game{
 			newCoo.setY(grid.getHeight());
 		player.setCoordinate(newCoo);
 		player.getHitbox().setCoordinate(newCoo);
-		
-//		System.out.println(player.getCoordinate().getX() + ", " + player.getCoordinate().getY());
-//		System.out.println(grid.getPlayer().getCoordinate().getX() + ", " + grid.getPlayer().getCoordinate().getY());
-//		System.out.println(left);
-		
+
+		//		System.out.println(player.getCoordinate().getX() + ", " + player.getCoordinate().getY());
+		//		System.out.println(grid.getPlayer().getCoordinate().getX() + ", " + grid.getPlayer().getCoordinate().getY());
+		//		System.out.println(left);
+
 		if (player.isHittable()) {
 			for (int i = 0; i < grid.getEnemyProjectiles().size(); i++) {
 				Projectile p = grid.getEnemyProjectiles().get(i);
@@ -182,9 +187,9 @@ public class Game{
 			}
 			for (int i = 0; i < grid.getEnemies().size(); i++) {
 				Enemy e = grid.getEnemies().get(i);
-//				System.out.println("Player Hitbox:" + player.getHitbox().getCoordinate());
-//				System.out.println("Enemy Hitbox:" + e.getHitbox().getCoordinate());
-//				System.out.println(player.getHitbox().hit(e.getHitbox()));
+				//				System.out.println("Player Hitbox:" + player.getHitbox().getCoordinate());
+				//				System.out.println("Enemy Hitbox:" + e.getHitbox().getCoordinate());
+				//				System.out.println(player.getHitbox().hit(e.getHitbox()));
 				if (player.getHitbox().hit(e.getHitbox())) {
 					grid.removeEnemy(e);
 					death();
@@ -196,29 +201,30 @@ public class Game{
 			//Implement powerups
 			if (player.getHitbox().hit(p.getHitbox())) {
 				if (p.getType() == Powerup.QUAD_GUN) {
-					
+
 				} else if (p.getType() == Powerup.ENEMY_CRASH) {
-					
+
 				} else if (p.getType() == Powerup.EXTRA_LIFE) {
-					
+
 				} else if (p.getType() == Powerup.NO_ENEMY_BULLETS) {
-					
+
 				} else if (p.getType() == Powerup.EXTRA_LOOP) {
-					
+
 				} else if (p.getType() == Powerup.THOUSAND_POINTS) {
-					
+
 				}
 				grid.removePowerup(p);
 			}
 		}
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
 			Enemy e = grid.getEnemies().get(i);
+			System.out.println("Enemy: " + i + "Position: " + e.getCoordinate());
 			for (int j = 0; j < grid.getFriendlyProjectiles().size(); j++) {
-				Projectile p = grid.getFriendlyProjectiles().get(i);
+				Projectile p = grid.getFriendlyProjectiles().get(j);
 				if (e.getHitbox().hit(p.getHitbox())) {
-					score += e.getPoints();
-					grid.removeEnemy(e);
+					score += e.hit();
 					grid.removeProjectile(p);
+					System.out.println("hit");
 				}
 			}
 		}
@@ -226,7 +232,7 @@ public class Game{
 	}
 
 	private void startLevel(){
-//		System.out.println("currentLevel < levels.size(): " + (currentLevel < levels.size()));
+		//		System.out.println("currentLevel < levels.size(): " + (currentLevel < levels.size()));
 		shoot = true;
 		if (currentLevel < levels.size()) {
 			initialTime = System.currentTimeMillis();
@@ -238,7 +244,7 @@ public class Game{
 			}, new Date(initialTime + levels.get(currentLevel).getLevelLength()));
 			timer.scheduleAtFixedRate(new TimerTask() {
 				public void run() {
-//					System.out.println("Timer iteration");
+					//					System.out.println("Timer iteration");
 					nextFrame(initialTime);
 				}
 			}, new Date(initialTime), 30);
@@ -248,7 +254,7 @@ public class Game{
 	}
 
 	public void startGame() {
-//		System.out.println("game started");
+		//		System.out.println("game started");
 		score = 0;
 		lives = 3;
 		rolls = 2;
@@ -256,18 +262,18 @@ public class Game{
 		currentLevel = 0;
 		startLevel();
 	}
-	
+
 	//implement
 	private void endLevel() {
 		cancelTasks();
 		currentLevel++;
-//		System.out.println("level ended");
+		//		System.out.println("level ended");
 	}
 
 	//implement
 	private void endGame() {
 		cancelTasks();
-//		System.out.println("game ended");
+		//		System.out.println("game ended");
 		System.exit(0);
 	}
 
@@ -275,9 +281,9 @@ public class Game{
 		timer.cancel();
 		timer.purge();
 	}
-	
+
 	private void death() {
-//		System.out.println("death");
+		//		System.out.println("death");
 		if (lives > 1) {
 			lives--;
 			grid.getPlayer().setHittable(false);
