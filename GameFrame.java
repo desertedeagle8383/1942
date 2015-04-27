@@ -13,7 +13,7 @@ public class GameFrame extends JFrame{
 	private GamePanel gamePanel;
 	private JLabel scoreLabel, livesLabel, rollsLabel;
 	private JPanel contentPane, labels;
-	private boolean up, down, left, right, alt, shift;
+	private boolean up, down, left, right, space, shift;
 	private JLabel projectiles, enemies, powerups;
 	
 	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
@@ -25,9 +25,9 @@ public class GameFrame extends JFrame{
 	private static final String RELEASE_DOWN = "release down";
 	private static final String MOVE_LEFT = "move left";
 	private static final String RELEASE_LEFT = "release left";
-	private static final String SHOOT = "shoot";
-	private static final String RELEASE_SHOOT = "release alt";
-	private static final String ROLL = "shoot";
+	private static final String SHOOT = "space";
+	private static final String RELEASE_SHOOT = "release space";
+	private static final String ROLL = "shift";
 	private static final String RELEASE_ROLL = "release shift";
 	
 	public GameFrame(GamePanel panel){
@@ -35,7 +35,7 @@ public class GameFrame extends JFrame{
 		down = false;
 		left = false;
 		right = false;
-		alt = false;
+		space = false;
 		shift = false;
 		this.gamePanel = panel;
 		contentPane = new JPanel();
@@ -64,57 +64,65 @@ public class GameFrame extends JFrame{
 		setVisible(true);
 	}
 	public void createKeyBindings(){
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("UP"), MOVE_UP);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt UP"), MOVE_UP);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift UP"), MOVE_UP);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift UP"), MOVE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("W"), MOVE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt W"), MOVE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift W"), MOVE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift W"), MOVE_UP);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released UP"), RELEASE_UP);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released UP"), RELEASE_UP);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released UP"), RELEASE_UP);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released UP"), RELEASE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released W"), RELEASE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released W"), RELEASE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released W"), RELEASE_UP);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released W"), RELEASE_UP);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("RIGHT"), MOVE_RIGHT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt RIGHT"), MOVE_RIGHT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift RIGHT"), MOVE_RIGHT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift RIGHT"), MOVE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("D"), MOVE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt D"), MOVE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift D"), MOVE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift D"), MOVE_RIGHT);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released RIGHT"), RELEASE_RIGHT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released RIGHT"), RELEASE_RIGHT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released RIGHT"), RELEASE_RIGHT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released RIGHT"), RELEASE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released D"), RELEASE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released D"), RELEASE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released D"), RELEASE_RIGHT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released D"), RELEASE_RIGHT);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("DOWN"), MOVE_DOWN);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt DOWN"), MOVE_DOWN);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift DOWN"), MOVE_DOWN);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift DOWN"), MOVE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("S"), MOVE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt S"), MOVE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift S"), MOVE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift S"), MOVE_DOWN);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released DOWN"), RELEASE_DOWN);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released DOWN"), RELEASE_DOWN);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released DOWN"), RELEASE_DOWN);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released DOWN"), RELEASE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released S"), RELEASE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released S"), RELEASE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released S"), RELEASE_DOWN);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released S"), RELEASE_DOWN);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("LEFT"), MOVE_LEFT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt LEFT"), MOVE_LEFT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift LEFT"), MOVE_LEFT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift LEFT"), MOVE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("A"), MOVE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt A"), MOVE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift A"), MOVE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift A"), MOVE_LEFT);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released LEFT"), RELEASE_LEFT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released LEFT"), RELEASE_LEFT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released LEFT"), RELEASE_LEFT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released LEFT"), RELEASE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released A"), RELEASE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released A"), RELEASE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released A"), RELEASE_LEFT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released A"), RELEASE_LEFT);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt pressed ALT"), SHOOT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift pressed ALT"), SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("SPACE"), SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt SPACE"), SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift SPACE"), SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift SPACE"), SHOOT);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released ALT"), RELEASE_SHOOT);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released ALT"), RELEASE_SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released SPACE"), RELEASE_SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released SPACE"), RELEASE_SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released SPACE"), RELEASE_SHOOT);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released SPACE"), RELEASE_SHOOT);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift pressed SHIFT"), ROLL);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift pressed SHIFT"), ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("SHIFT"), ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt SHIFT"), ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift SHIFT"), ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift SHIFT"), ROLL);
 		
 		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released SHIFT"), RELEASE_ROLL);
 		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released SHIFT"), RELEASE_ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released SHIFT"), RELEASE_ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released SHIFT"), RELEASE_ROLL);
 
 		gamePanel.getActionMap().put(MOVE_UP, new Action(0));
 		gamePanel.getActionMap().put(RELEASE_UP, new ReleaseAction(0));
@@ -151,7 +159,7 @@ public class GameFrame extends JFrame{
 			}
 			if(actionNumber == 4){
 				System.out.println("SHOOT");
-				alt = true;
+				space= true;
 			}
 			if(actionNumber == 5){
 				shift = true;
@@ -174,7 +182,7 @@ public class GameFrame extends JFrame{
 			if (direction == 3)
 				left = false;
 			if (direction == 4) {
-				alt = false;
+				space = false;
 				System.out.println("STOP");
 			}
 			if (direction == 5)
@@ -194,11 +202,11 @@ public class GameFrame extends JFrame{
 	public boolean getDown() {
 		return down;
 	}
-	public boolean getAlt() {
-		return alt;
-	}
 	public boolean getShift() {
 		return shift;
+	}
+	public boolean getSpace() {
+		return space;
 	}
 	public void updateFrame(Grid g, int score, int lives, int rolls, int projectile, int enemy, int powerup) {
 		gamePanel.updatePanel(g);
