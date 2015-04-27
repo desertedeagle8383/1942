@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class Game{
 	private int currentLevel;
 	private int score;
@@ -100,7 +99,7 @@ public class Game{
 //			System.out.println(currentProjectile.getHitbox().getHeight());
 			Coordinate lastCoo = currentProjectile.getCoordinate();
 			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
-			if (newCoo.getX() + currentProjectile.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() + currentProjectile.getHeight() > grid.getHeight())
+			if (newCoo.getX() + currentProjectile.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentProjectile.getHeight() > grid.getHeight())
 				grid.removeProjectile(currentProjectile);
 			else {
 				currentProjectile.setCoordinate(new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity())));
@@ -133,7 +132,7 @@ public class Game{
 					}
 				}
 				Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
-				if (newCoo.getX() + currentEnemy.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() + currentEnemy.getHeight() > grid.getHeight()) {
+				if (newCoo.getX() + currentEnemy.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentEnemy.getHeight() > grid.getHeight()) {
 					grid.removeEnemy(currentEnemy);
 				} else {
 //					System.out.println(newCoo);
@@ -155,7 +154,7 @@ public class Game{
 		if (gameFrame.getDown())
 			netY -= 10;
 //		System.out.println(gameFrame.getAlt());
-		if (gameFrame.getAlt())
+		if (gameFrame.getShift())
 			shoot();
 		Coordinate newCoo = new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY);
 		if (newCoo.getX() < 0)
