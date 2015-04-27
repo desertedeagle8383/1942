@@ -7,17 +7,20 @@ public class Enemy extends Thing {
 	private ArrayList<Action> actions;
 	private int points;
 	private String filePath = "Z:\\programming\\workspace2\\1942\\src\\Enemy.png";
-	public Enemy(Coordinate coordinate, int width, int height, int health, int points, ArrayList<Action> actions){
+	public Enemy(Coordinate coordinate, int width, int height, int initX, int initY, int health, int points, ArrayList<Action> actions){
 		this.health = health;
 		this.actions = actions;
 		this.powerup = null;
 		this.points = points;
+		setXVelocity(initX);
+		setYVelocity(initY);
 		setCoordinate(coordinate);
 		setHitbox(new Hitbox(coordinate, width, height));
 		setWidth(width);
 		setHeight(height);
 		setXVelocity(0);
 		setYVelocity(0);
+		setImage(filePath);
 	}
 	public Enemy(Coordinate coordinate, int width, int height, int health, int points, ArrayList<Action> actions, Powerup powerupDrop){
 		this.health = health;
@@ -39,5 +42,12 @@ public class Enemy extends Thing {
 	public int getHealth(){return health;}
 	public boolean hasPowerup() {return powerup == null;}
 	public Powerup getPowerup() {return powerup;}
-	public boolean isAlive(){return (health == 0);}
+	public boolean isAlive(){return (health > 0);}
+	public int hit() {
+		health--;
+		if (isAlive())
+			return points;
+		else
+			return 0;
+	}
 }
