@@ -27,12 +27,12 @@ public class Hitbox {
 	}
 	
 	private Rectangle getRectangle() {
-		return new Rectangle(coordinate.getX(), coordinate.getY(), width, height);
+		return new Rectangle(coordinate.getX(), coordinate.getY() - getHeight(), width, height);
 	}
 	
 	public boolean hit(Hitbox hitbox){
 		Rectangle box1 = getRectangle();
-		Rectangle box2 = new Rectangle(hitbox.getCoordinate().getX(), hitbox.getCoordinate().getY(), hitbox.getWidth(), hitbox.getHeight());
+		Rectangle box2 = new Rectangle(hitbox.getCoordinate().getX(), hitbox.getCoordinate().getY() - hitbox.getHeight(), hitbox.getWidth(), hitbox.getHeight());
 		return box1.intersects(box2);
 	}
 }
