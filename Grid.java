@@ -58,5 +58,22 @@ public class Grid {
 	public void createPlayer(){
 		player = new Player();
 	}
+	public void removeAllEnemyProjectiles() {
+		for (int i = 0; i < enemyProjectiles.size(); i++) {
+			Projectile p = enemyProjectiles.get(i);
+			enemyProjectiles.remove(p);
+			projectiles.remove(p);
+		}
+	}
+	public int destroyAllEnemies() {
+		int total = 0;
+		for (int i = 0; i < enemies.size(); i++) {
+			Enemy e = enemies.get(i);
+			total += e.getPoints();
+			enemies.remove(e);
+		}
+		return total;
+	}
+	
 	public Player getPlayer(){return player;}
 }
