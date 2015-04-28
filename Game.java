@@ -1,4 +1,3 @@
-import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -15,6 +14,7 @@ public class Game{
 	private ArrayList<Level> levels;
 	private boolean shoot;
 	private GameFrame gameFrame;
+	private boolean quadGun;
 
 	public Game(GameFrame frame, Grid grid){
 		gameFrame = frame;
@@ -30,7 +30,7 @@ public class Game{
 		ArrayList<Long> times = new ArrayList<Long>();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		for (int i = 0; i < 20; i++) {
-			Enemy e1 = new Enemy(new Coordinate(30*i, 400), 30, 30, 0, 0, 5000, 500, acts1);
+			Enemy e1 = new Enemy(new Coordinate(30*i, 400), 30, 30, 0, 0, 5, 500, acts1);
 			enemies.add(e1);
 			times.add(new Long(1000));
 		}
@@ -49,8 +49,18 @@ public class Game{
 
 	public void shoot(){
 		if (shoot) {
-			Projectile newProjectile = new Projectile(new Coordinate(grid.getPlayer().getCoordinate().getX() + 13, grid.getPlayer().getCoordinate().getY()));
-			grid.addProjectile(newProjectile);
+			Player p = grid.getPlayer();
+			Projectile p1 = new Projectile(new Coordinate(p.getCoordinate().getX() + 3 , p.getCoordinate().getY()), false, false);
+			Projectile p2= new Projectile(new Coordinate(p.getCoordinate().getX() + 23 , p.getCoordinate().getY()), false, false);
+			
+			if (quadGun) {
+				Projectile p3 = new Projectile(new Coordinate(p.getCoordinate().getX() + 3 , p.getCoordinate().getY()), true, true);
+				Projectile p4= new Projectile(new Coordinate(p.getCoordinate().getX() + 23 , p.getCoordinate().getY()), true, false);
+				grid.addProjectile(p3);
+				grid.addProjectile(p4);
+			}
+			grid.addProjectile(p1);
+			grid.addProjectile(p2);
 			shoot = false;
 			timer.schedule(new TimerTask() {
 
@@ -59,11 +69,12 @@ public class Game{
 					shoot = true;
 				}
 
-			}, 100);
+			}, 200);
 		}
 	}
 
 	public void nextFrame(long initialTime){
+//		System.out.println("start");
 		long elapsedTime = System.currentTimeMillis() - initialTime;
 		//		System.out.println(elapsedTime);
 		Player player = grid.getPlayer();
@@ -181,16 +192,20 @@ public class Game{
 			for (int i = 0; i < grid.getEnemyProjectiles().size(); i++) {
 				Projectile p = grid.getEnemyProjectiles().get(i);
 				if (player.getHitbox().hit(p.getHitbox())) {
+					
 					death();
 					grid.removeProjectile(p);
 				}
 			}
+//			System.out.println("frame");
 			for (int i = 0; i < grid.getEnemies().size(); i++) {
+//				System.out.println("Enemy: " + i);
 				Enemy e = grid.getEnemies().get(i);
 				//				System.out.println("Player Hitbox:" + player.getHitbox().getCoordinate());
 				//				System.out.println("Enemy Hitbox:" + e.getHitbox().getCoordinate());
 				//				System.out.println(player.getHitbox().hit(e.getHitbox()));
 				if (player.getHitbox().hit(e.getHitbox())) {
+//					System.out.println("hit");
 					grid.removeEnemy(e);
 					death();
 				}
@@ -203,32 +218,33 @@ public class Game{
 				if (p.getType() == Powerup.QUAD_GUN) {
 
 				} else if (p.getType() == Powerup.ENEMY_CRASH) {
-
+					score += grid.destroyAllEnemies();
 				} else if (p.getType() == Powerup.EXTRA_LIFE) {
-
+					lives++;
 				} else if (p.getType() == Powerup.NO_ENEMY_BULLETS) {
-
+					grid.removeAllEnemyProjectiles();
 				} else if (p.getType() == Powerup.EXTRA_LOOP) {
-
+					rolls++;
 				} else if (p.getType() == Powerup.THOUSAND_POINTS) {
-
+					score += 1000;
 				}
 				grid.removePowerup(p);
 			}
 		}
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
 			Enemy e = grid.getEnemies().get(i);
-			System.out.println("Enemy: " + i + "Position: " + e.getCoordinate());
+//			System.out.println("Enemy: " + i + "Position: " + e.getCoordinate());
 			for (int j = 0; j < grid.getFriendlyProjectiles().size(); j++) {
 				Projectile p = grid.getFriendlyProjectiles().get(j);
 				if (e.getHitbox().hit(p.getHitbox())) {
 					score += e.hit();
 					grid.removeProjectile(p);
-					System.out.println("hit");
+//					System.out.println("hit");
 				}
 			}
 		}
 		gameFrame.updateFrame(grid, score, lives, rolls, grid.getProjectiles().size(), grid.getEnemies().size(), grid.getPowerups().size());
+//		System.out.println("end");
 	}
 
 	private void startLevel(){
@@ -255,6 +271,7 @@ public class Game{
 
 	public void startGame() {
 		//		System.out.println("game started");
+		quadGun = true;
 		score = 0;
 		lives = 3;
 		rolls = 2;
@@ -284,9 +301,9 @@ public class Game{
 
 	private void death() {
 		//		System.out.println("death");
+		grid.getPlayer().setHittable(false);
 		if (lives > 1) {
 			lives--;
-			grid.getPlayer().setHittable(false);
 			timer.schedule(new TimerTask() {
 				public void run() {
 					grid.getPlayer().setHittable(true);
