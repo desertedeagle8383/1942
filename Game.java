@@ -19,18 +19,20 @@ public class Game{
 	public Game(GameFrame frame, Grid grid){
 		gameFrame = frame;
 
-		//		Action a2 = new Action(1000, -20, -20, true, true, null, true, 1000);
-		//		Action a3 = new Action(5000, -20, 0, false, false, null, false, 0);
-		//		Action a4 = new Action(10000, -20, 20, false, false, null, false, 0);
+		Action a1 = new Action(2000, -2, 0, false, false, null, true, 4000);
+		Action a2 = new Action(4000, 2, 0, false, false, null, true, 4000);
+		Action a3 = new Action(3000, 0, -2, false, false, null, true, 4000);
+		Action a4 = new Action(5000, 0, 2, false, false, null, true, 4000);
 
 		ArrayList<Action> acts1 = new ArrayList<Action>();
-		//		acts1.add(a2);
-		//		acts1.add(a3);
-		//		acts1.add(a4);
+		acts1.add(a1);
+		acts1.add(a2);
+		acts1.add(a3);
+		acts1.add(a4);
 		ArrayList<Long> times = new ArrayList<Long>();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		for (int i = 0; i < 20; i++) {
-			Enemy e1 = new Enemy(new Coordinate(30*i, 400), 30, 30, -1, -1, 5, 500, acts1);
+			Enemy e1 = new Enemy(new Coordinate(30*i + 100, 400), 30, 30, 0, 0, 5, 500, acts1);
 			//			System.out.println("X Velocity: " + e1.getXVelocity());
 			//			System.out.println("Y Velocity: " + e1.getYVelocity());
 			enemies.add(e1);
@@ -103,7 +105,7 @@ public class Game{
 
 		for (int i = 0; i < grid.getProjectiles().size(); i++) {
 			Projectile currentProjectile = grid.getProjectiles().get(i);
-			System.out.println(currentProjectile.getWidth());
+			//			System.out.println(currentProjectile.getWidth());
 			Coordinate lastCoo = currentProjectile.getCoordinate();
 			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
 			if (newCoo.getX() + currentProjectile.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentProjectile.getHeight() > grid.getHeight()) {
@@ -128,12 +130,13 @@ public class Game{
 				i--;
 			} else {
 				Coordinate lastCoo = currentEnemy.getCoordinate();
+				ArrayList<Action> currentActions = currentEnemy.getActions();
 				for(int j = 0; j < currentEnemy.getActions().size(); j++) {
-					//					System.out.println("Enemy: " + i + " Action: " + j);
-					Action currentAction = currentEnemy.getActions().get(i);
+										System.out.println("Enemy: " + i + " Action: " + j);
+					Action currentAction = currentActions.get(j);
 					long delay = currentAction.getDelay();
 					if (delay < elapsedTime && delay > elapsedTime - 30) {
-						//						System.out.println("Action: " + i);
+//												System.out.println("Action: " + i);
 						//						System.out.println("X Velocity: " + currentAction.getXVelocity());
 						//						System.out.println("Y Velocity: " + currentAction.getYVelocity());
 						//						System.out.println("Shoot: " + currentAction.getFire());
@@ -141,14 +144,19 @@ public class Game{
 						//						System.out.println("Loops: " + currentAction.getLoop());
 						currentEnemy.setXVelocity(currentAction.getXVelocity());
 						currentEnemy.setYVelocity(currentAction.getYVelocity());
-						if (currentAction.getFire())
+						if (currentAction.getFire()) {
 							if (currentAction.aimsAtPlayer()) 
 								grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), player.getCoordinate()));
 							else
 								grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getTargetCoordinate()));
-						if (currentAction.getLoop()) {
-							currentEnemy.getActions().add(currentAction.generateLoopedCopy());
 						}
+						currentActions.remove(currentAction);
+						j--;
+						if (currentAction.getLoop()) {
+							System.out.println("Added action to Enemy " + i + "'s action list. Size: " + currentActions.size());
+							currentActions.add(currentAction.generateLoopedCopy());
+						}
+						
 					}
 				}
 				Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
@@ -161,6 +169,7 @@ public class Game{
 					currentEnemy.getHitbox().setCoordinate(newCoo);
 				}
 			}
+//			System.out.println(currentEnemy.getActions().size());
 		}
 		Coordinate playerCoo = player.getCoordinate();
 		int netX = 0;
@@ -293,7 +302,7 @@ public class Game{
 
 	public void startGame() {
 		//		System.out.println("game started");
-		quadGun = true;
+		quadGun = false;
 		score = 0;
 		lives = 3;
 		shields = 2;
