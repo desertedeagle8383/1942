@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 public class GameFrame extends JFrame{
 	private GamePanel gamePanel;
-	private JLabel scoreLabel, livesLabel, rollsLabel;
+	private JLabel scoreLabel, livesLabel, shieldsLabel;
 	private JPanel contentPane, labels;
 	private boolean up, down, left, right, space, shift;
 	private JLabel projectiles, enemies, powerups;
@@ -27,10 +27,11 @@ public class GameFrame extends JFrame{
 	private static final String RELEASE_LEFT = "release left";
 	private static final String SHOOT = "space";
 	private static final String RELEASE_SHOOT = "release space";
-	private static final String ROLL = "shift";
-	private static final String RELEASE_ROLL = "release shift";
+	private static final String SHIELD = "shift";
+	private static final String RELEASE_SHIELD = "release shift";
 	
 	public GameFrame(GamePanel panel){
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		up = false;
 		down = false;
 		left = false;
@@ -47,10 +48,10 @@ public class GameFrame extends JFrame{
 		contentPane.add(gamePanel);
 		scoreLabel = new JLabel();
 		livesLabel = new JLabel();
-		rollsLabel = new JLabel();
+		shieldsLabel = new JLabel();
 		labels.add(scoreLabel);
 		labels.add(livesLabel);
-		labels.add(rollsLabel);
+		labels.add(shieldsLabel);
 		
 		projectiles = new JLabel();
 		enemies = new JLabel();
@@ -114,15 +115,15 @@ public class GameFrame extends JFrame{
 		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released SPACE"), RELEASE_SHOOT);
 		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released SPACE"), RELEASE_SHOOT);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("SHIFT"), ROLL);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt SHIFT"), ROLL);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift SHIFT"), ROLL);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift SHIFT"), ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("SHIFT"), SHIELD);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt SHIFT"), SHIELD);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift SHIFT"), SHIELD);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift SHIFT"), SHIELD);
 		
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released SHIFT"), RELEASE_ROLL);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released SHIFT"), RELEASE_ROLL);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released SHIFT"), RELEASE_ROLL);
-		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released SHIFT"), RELEASE_ROLL);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("released SHIFT"), RELEASE_SHIELD);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt released SHIFT"), RELEASE_SHIELD);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("shift released SHIFT"), RELEASE_SHIELD);
+		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("alt shift released SHIFT"), RELEASE_SHIELD);
 
 		gamePanel.getActionMap().put(MOVE_UP, new Action(0));
 		gamePanel.getActionMap().put(RELEASE_UP, new ReleaseAction(0));
@@ -134,8 +135,8 @@ public class GameFrame extends JFrame{
 		gamePanel.getActionMap().put(RELEASE_LEFT, new ReleaseAction(3));
 		gamePanel.getActionMap().put(SHOOT, new Action(4));
 		gamePanel.getActionMap().put(RELEASE_SHOOT, new ReleaseAction(4));
-		gamePanel.getActionMap().put(ROLL, new Action(5));
-		gamePanel.getActionMap().put(RELEASE_ROLL, new ReleaseAction(5));
+		gamePanel.getActionMap().put(SHIELD, new Action(5));
+		gamePanel.getActionMap().put(RELEASE_SHIELD, new ReleaseAction(5));
 	}
 	private class Action extends AbstractAction{
 		int actionNumber; 
@@ -158,7 +159,7 @@ public class GameFrame extends JFrame{
 				left = true;
 			}
 			if(actionNumber == 4){
-				System.out.println("SHOOT");
+//				System.out.println("SHOOT");
 				space= true;
 			}
 			if(actionNumber == 5){
@@ -183,7 +184,7 @@ public class GameFrame extends JFrame{
 				left = false;
 			if (direction == 4) {
 				space = false;
-				System.out.println("STOP");
+//				System.out.println("STOP");
 			}
 			if (direction == 5)
 				shift = false;
@@ -208,10 +209,10 @@ public class GameFrame extends JFrame{
 	public boolean getSpace() {
 		return space;
 	}
-	public void updateFrame(Grid g, int score, int lives, int rolls, int projectile, int enemy, int powerup) {
+	public void updateFrame(Grid g, int score, int lives, int shields, int projectile, int enemy, int powerup) {
 		gamePanel.updatePanel(g);
 		scoreLabel.setText("Score: " + score);
-		rollsLabel.setText("Rolls: " + rolls);
+		shieldsLabel.setText("Shields " + shields);
 		livesLabel.setText("Lives: " + lives);
 		projectiles.setText("Projectiles: " + projectile);
 		enemies.setText("Enemies: " + enemy);
