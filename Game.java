@@ -7,7 +7,7 @@ public class Game{
 	private int currentLevel;
 	private int score;
 	private int lives;
-	private int rolls;
+	private int shields;
 	private long initialTime;
 	private Grid grid;
 	private Timer timer;
@@ -30,29 +30,27 @@ public class Game{
 		ArrayList<Long> times = new ArrayList<Long>();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		for (int i = 0; i < 20; i++) {
-			Enemy e1 = new Enemy(new Coordinate(30*i, 400), 30, 30, 0, 0, 5, 500, acts1);
+			Enemy e1 = new Enemy(new Coordinate(30*i, 400), 30, 30, -1, -1, 5, 500, acts1);
+			//			System.out.println("X Velocity: " + e1.getXVelocity());
+			//			System.out.println("Y Velocity: " + e1.getYVelocity());
 			enemies.add(e1);
 			times.add(new Long(1000));
 		}
-		
+
 		Level testLevel = new Level(enemies, times, 9999999);
 		levels = new ArrayList<Level>();
 		levels.add(testLevel);
 		this.grid = grid;
 	}
 
-	public int getScore(){return score;}
-	public int getLives(){return lives;}
-	public int getRolls(){return rolls;}
 	public long getInitialTime(){return initialTime;}
-	public Grid getGrid(){return grid;}
 
 	public void shoot(){
 		if (shoot) {
 			Player p = grid.getPlayer();
 			Projectile p1 = new Projectile(new Coordinate(p.getCoordinate().getX() + 3 , p.getCoordinate().getY()), false, false);
 			Projectile p2= new Projectile(new Coordinate(p.getCoordinate().getX() + 23 , p.getCoordinate().getY()), false, false);
-			
+
 			if (quadGun) {
 				Projectile p3 = new Projectile(new Coordinate(p.getCoordinate().getX() + 3 , p.getCoordinate().getY()), true, true);
 				Projectile p4= new Projectile(new Coordinate(p.getCoordinate().getX() + 23 , p.getCoordinate().getY()), true, false);
@@ -63,18 +61,16 @@ public class Game{
 			grid.addProjectile(p2);
 			shoot = false;
 			timer.schedule(new TimerTask() {
-
 				@Override
 				public void run() {
 					shoot = true;
 				}
-
 			}, 200);
 		}
 	}
 
 	public void nextFrame(long initialTime){
-//		System.out.println("start");
+		//		System.out.println("start");
 		long elapsedTime = System.currentTimeMillis() - initialTime;
 		//		System.out.println(elapsedTime);
 		Player player = grid.getPlayer();
@@ -95,8 +91,10 @@ public class Game{
 			Powerup currentPowerup = grid.getPowerups().get(i);
 			Coordinate lastCoo = currentPowerup.getCoordinate();
 			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentPowerup.getXVelocity()), (int) (lastCoo.getY() + currentPowerup.getYVelocity()));
-			if (newCoo.getY() < 0)
+			if (newCoo.getY() < 0) {
 				grid.removePowerup(currentPowerup);
+				i--;
+			}
 			else {
 				currentPowerup.setCoordinate(new Coordinate((int) (lastCoo.getX()), (int) (lastCoo.getY() + currentPowerup.getYVelocity())));
 				currentPowerup.getHitbox().setCoordinate(newCoo);
@@ -105,33 +103,42 @@ public class Game{
 
 		for (int i = 0; i < grid.getProjectiles().size(); i++) {
 			Projectile currentProjectile = grid.getProjectiles().get(i);
-			//			System.out.println(currentProjectile.getHitbox().getHeight());
+			System.out.println(currentProjectile.getWidth());
 			Coordinate lastCoo = currentProjectile.getCoordinate();
 			Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity()));
-			if (newCoo.getX() + currentProjectile.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentProjectile.getHeight() > grid.getHeight())
+			if (newCoo.getX() + currentProjectile.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentProjectile.getHeight() > grid.getHeight()) {
 				grid.removeProjectile(currentProjectile);
-			else {
+				i--;
+			} else {
 				currentProjectile.setCoordinate(new Coordinate((int) (lastCoo.getX() + currentProjectile.getXVelocity()), (int) (lastCoo.getY() + currentProjectile.getYVelocity())));
 				currentProjectile.getHitbox().setCoordinate(newCoo);
 			}
 		}
 
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
-//			System.out.println("loop");
+			//			System.out.println("loop");
 			Enemy currentEnemy = grid.getEnemies().get(i);
-//			System.out.println(currentEnemy.getHealth());
-			if (currentEnemy.isAlive()) {
+			//			System.out.println("Enemy: " + i);
+			//			System.out.println("Enemy X Velocity: " + currentEnemy.getXVelocity());
+			//			System.out.println("Enemy Y Velocity: " + currentEnemy.getYVelocity());
+			//			System.out.println(currentEnemy.getHealth());
+			if (!currentEnemy.isAlive()) {
+				//				System.out.println("removed");
+				grid.removeEnemy(currentEnemy);
+				i--;
+			} else {
 				Coordinate lastCoo = currentEnemy.getCoordinate();
 				for(int j = 0; j < currentEnemy.getActions().size(); j++) {
+					//					System.out.println("Enemy: " + i + " Action: " + j);
 					Action currentAction = currentEnemy.getActions().get(i);
 					long delay = currentAction.getDelay();
 					if (delay < elapsedTime && delay > elapsedTime - 30) {
-						System.out.println("Action: " + i);
-						System.out.println("X Velocity: " + currentAction.getXVelocity());
-						System.out.println("Y Velocity: " + currentAction.getYVelocity());
-						System.out.println("Shoot: " + currentAction.getFire());
-						System.out.println("Fires At Player: " + currentAction.aimsAtPlayer());
-						System.out.println("Loops: " + currentAction.getLoop());
+						//						System.out.println("Action: " + i);
+						//						System.out.println("X Velocity: " + currentAction.getXVelocity());
+						//						System.out.println("Y Velocity: " + currentAction.getYVelocity());
+						//						System.out.println("Shoot: " + currentAction.getFire());
+						//						System.out.println("Fires At Player: " + currentAction.aimsAtPlayer());
+						//						System.out.println("Loops: " + currentAction.getLoop());
 						currentEnemy.setXVelocity(currentAction.getXVelocity());
 						currentEnemy.setYVelocity(currentAction.getYVelocity());
 						if (currentAction.getFire())
@@ -143,35 +150,34 @@ public class Game{
 							currentEnemy.getActions().add(currentAction.generateLoopedCopy());
 						}
 					}
-					Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
-					if (newCoo.getX() + currentEnemy.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentEnemy.getHeight() > grid.getHeight()) {
-						grid.removeEnemy(currentEnemy);
-					} else {
-						//					System.out.println(newCoo);
-						currentEnemy.setCoordinate(newCoo);
-						currentEnemy.getHitbox().setCoordinate(newCoo);
-					}
 				}
-			} else {
-//				System.out.println("removed");
-				grid.removeEnemy(currentEnemy);
+				Coordinate newCoo = new Coordinate((int) (lastCoo.getX() + currentEnemy.getXVelocity()), (int) (lastCoo.getY() + currentEnemy.getYVelocity()));
+				if (newCoo.getX() + currentEnemy.getWidth() < 0 || newCoo.getX() > grid.getWidth() || newCoo.getY() < 0 || newCoo.getY() - currentEnemy.getHeight() > grid.getHeight()) {
+					grid.removeEnemy(currentEnemy);
+					i--;
+				} else {
+					//					System.out.println(newCoo);
+					currentEnemy.setCoordinate(newCoo);
+					currentEnemy.getHitbox().setCoordinate(newCoo);
+				}
 			}
 		}
-
 		Coordinate playerCoo = player.getCoordinate();
 		int netX = 0;
 		int netY = 0;
 		if (gameFrame.getLeft())
-			netX -= 10;
+			netX -= 7;
 		if (gameFrame.getRight())
-			netX += 10;
+			netX += 7;
 		if (gameFrame.getUp())
-			netY += 10;
+			netY += 7;
 		if (gameFrame.getDown())
-			netY -= 10;
+			netY -= 7;
 		//		System.out.println(gameFrame.getAlt());
-		if (gameFrame.getShift())
+		if (gameFrame.getSpace())
 			shoot();
+		if (player.isHittable() && gameFrame.getShift())
+			shield();
 		Coordinate newCoo = new Coordinate(playerCoo.getX() + netX, playerCoo.getY() + netY);
 		if (newCoo.getX() < 0)
 			newCoo.setX(0);
@@ -191,22 +197,23 @@ public class Game{
 		if (player.isHittable()) {
 			for (int i = 0; i < grid.getEnemyProjectiles().size(); i++) {
 				Projectile p = grid.getEnemyProjectiles().get(i);
-				if (player.getHitbox().hit(p.getHitbox())) {
-					
+				if (player.isHittable() && player.getHitbox().hit(p.getHitbox())) {
 					death();
 					grid.removeProjectile(p);
+					i--;
 				}
 			}
-//			System.out.println("frame");
+			//			System.out.println("frame");
 			for (int i = 0; i < grid.getEnemies().size(); i++) {
-//				System.out.println("Enemy: " + i);
+				//				System.out.println("Enemy: " + i);
 				Enemy e = grid.getEnemies().get(i);
 				//				System.out.println("Player Hitbox:" + player.getHitbox().getCoordinate());
 				//				System.out.println("Enemy Hitbox:" + e.getHitbox().getCoordinate());
 				//				System.out.println(player.getHitbox().hit(e.getHitbox()));
-				if (player.getHitbox().hit(e.getHitbox())) {
-//					System.out.println("hit");
+				if (player.isHittable() && player.getHitbox().hit(e.getHitbox())) {
+					//					System.out.println("hit");
 					grid.removeEnemy(e);
+					i--;
 					death();
 				}
 			}
@@ -223,28 +230,43 @@ public class Game{
 					lives++;
 				} else if (p.getType() == Powerup.NO_ENEMY_BULLETS) {
 					grid.removeAllEnemyProjectiles();
-				} else if (p.getType() == Powerup.EXTRA_LOOP) {
-					rolls++;
+				} else if (p.getType() == Powerup.EXTRA_SHIELD) {
+					shields++;
 				} else if (p.getType() == Powerup.THOUSAND_POINTS) {
 					score += 1000;
 				}
 				grid.removePowerup(p);
+				i--;
 			}
 		}
 		for (int i = 0; i < grid.getEnemies().size(); i++) {
 			Enemy e = grid.getEnemies().get(i);
-//			System.out.println("Enemy: " + i + "Position: " + e.getCoordinate());
+			//			System.out.println("Enemy: " + i + "Position: " + e.getCoordinate());
 			for (int j = 0; j < grid.getFriendlyProjectiles().size(); j++) {
 				Projectile p = grid.getFriendlyProjectiles().get(j);
 				if (e.getHitbox().hit(p.getHitbox())) {
 					score += e.hit();
 					grid.removeProjectile(p);
-//					System.out.println("hit");
+					j--;
+					//					System.out.println("hit");
 				}
 			}
 		}
-		gameFrame.updateFrame(grid, score, lives, rolls, grid.getProjectiles().size(), grid.getEnemies().size(), grid.getPowerups().size());
-//		System.out.println("end");
+		gameFrame.updateFrame(grid, score, lives, shields, grid.getProjectiles().size(), grid.getEnemies().size(), grid.getPowerups().size());
+		//		System.out.println("end");
+	}
+
+	private void shield() {
+		if (shields > 0) {
+			shields--;
+			grid.getPlayer().setHittable(false);
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					grid.getPlayer().setHittable(true);
+				}
+			}, 3000);
+		}
 	}
 
 	private void startLevel(){
@@ -274,7 +296,7 @@ public class Game{
 		quadGun = true;
 		score = 0;
 		lives = 3;
-		rolls = 2;
+		shields = 2;
 		grid.createPlayer();
 		currentLevel = 0;
 		startLevel();
