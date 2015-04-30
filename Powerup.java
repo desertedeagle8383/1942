@@ -1,11 +1,9 @@
-import java.awt.Image;
-
 public class Powerup extends Thing{
 	public static final int QUAD_GUN = 314;
 	public static final int ENEMY_CRASH = 159;
 	public static final int EXTRA_LIFE = 265;
 	public static final int NO_ENEMY_BULLETS = 358;
-	public static final int EXTRA_LOOP = 979;
+	public static final int EXTRA_SHIELD = 979;
 	public static final int THOUSAND_POINTS = 323;
 	
 	private int type;
