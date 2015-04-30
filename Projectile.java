@@ -1,6 +1,7 @@
 public class Projectile extends Thing{
 	private boolean enemyProjectile;
-	private String filePath = "Z:\\programming\\workspace2\\1942\\src\\Projectile.png";
+	private String filePath1 = "Z:\\programming\\workspace2\\1942\\src\\Enemy_Projectile.png";
+	private String filePath2 = "Z:\\programming\\workspace2\\1942\\src\\Friendly_Projectile.png";
 
 	public Projectile(boolean enemy, Coordinate coordinate, Coordinate targetCoordinate) {
 		enemyProjectile = enemy;
@@ -14,30 +15,30 @@ public class Projectile extends Thing{
 			angle = Math.atan((targetCoordinate.getY() - coordinate.getY())/(targetCoordinate.getX() - coordinate.getX()));
 		}
 		setCoordinate(coordinate);
-		setXVelocity((int) (10*Math.cos(angle)));
-		setYVelocity((int) (10*Math.sin(angle)));
-		setWidth(5);
-		setHeight(5);
-		setHitbox(new Hitbox(coordinate, 5, 5));
-		setImage(filePath);
+		setXVelocity((int) (15*Math.cos(angle)));
+		setYVelocity((int) (15*Math.sin(angle)));
+		setWidth(8);
+		setHeight(8);
+		setHitbox(new Hitbox(coordinate, 8, 8));
+		setImage(filePath1);
 	}
 	public Projectile(Coordinate coordinate, boolean angled, boolean left) {
 		enemyProjectile = false;
 		setCoordinate(coordinate);
 		if (angled) {
 			if (left)
-				setXVelocity(-11);
+				setXVelocity(-9);
 			else
-				setXVelocity(11);
+				setXVelocity(9);
 			setYVelocity(11);
 		} else {
 			setXVelocity(0);
 			setYVelocity(15);
 		}
-		setWidth(5);
-		setHeight(5);
-		setHitbox(new Hitbox(coordinate, 5, 5));
-		setImage(filePath);
+		setWidth(8);
+		setHeight(8);
+		setHitbox(new Hitbox(coordinate, 8, 8));
+		setImage(filePath2);
 	}
 	public boolean isEnemyProjectile() {
 		return enemyProjectile;
