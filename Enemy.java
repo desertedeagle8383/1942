@@ -18,8 +18,6 @@ public class Enemy extends Thing {
 		setHitbox(new Hitbox(coordinate, width, height));
 		setWidth(width);
 		setHeight(height);
-		setXVelocity(0);
-		setYVelocity(0);
 		setImage(filePath);
 	}
 	public Enemy(Coordinate coordinate, int width, int height, int health, int points, ArrayList<Action> actions, Powerup powerupDrop){
@@ -45,9 +43,11 @@ public class Enemy extends Thing {
 	public boolean isAlive(){return (health > 0);}
 	public int hit() {
 		health--;
-		if (isAlive())
-			return points;
-		else
+		if (isAlive()) {
 			return 0;
+		}
+		else {
+			return points;
+		}
 	}
 }
