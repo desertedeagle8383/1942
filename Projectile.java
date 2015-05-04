@@ -1,7 +1,7 @@
 public class Projectile extends Thing{
 	private boolean enemyProjectile;
-	private String filePath1 = "Z:\\programming\\workspace2\\1942\\src\\Enemy_Projectile.png";
-	private String filePath2 = "Z:\\programming\\workspace2\\1942\\src\\Friendly_Projectile.png";
+	private String filePath1 = "Enemy_Projectile.png";
+	private String filePath2 = "Friendly_Projectile.png";
 
 	public Projectile(boolean enemy, Coordinate coordinate, Coordinate targetCoordinate) {
 		enemyProjectile = enemy;
