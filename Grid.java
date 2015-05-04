@@ -24,7 +24,7 @@ public class Grid {
 		powerups.add(powerup);
 	}
 	public void removePowerup(Powerup powerup){
-		powerups.add(powerup);
+		powerups.remove(powerup);
 	}
 	public void addEnemy(Enemy enemy){
 		enemies.add(enemy);
@@ -70,6 +70,8 @@ public class Grid {
 		for (int i = 0; i < enemies.size(); i++) {
 			Enemy e = enemies.get(i);
 			total += e.getPoints();
+			if (e.hasPowerup())
+				addPowerup(e.getPowerup());
 			enemies.remove(e);
 		}
 		return total;
