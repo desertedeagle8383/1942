@@ -1,7 +1,7 @@
 public class Player extends Thing{
 	private boolean hittable;
-	private String filePath1 = "Z:\\programming\\workspace2\\1942\\src\\Player.png";
-	private String filePath2 = "Z:\\programming\\workspace2\\1942\\src\\Shielded_Player.png";
+	private String filePath1 = "Player.png";
+	private String filePath2 = "Shielded_Player.png";
 	public Player() {
 		hittable = true;
 		setCoordinate(new Coordinate(400, 100));
