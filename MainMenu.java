@@ -94,8 +94,8 @@ public class MainMenu extends JPanel implements KeyListener{
 					arrowPlace++;
 			} else {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER){
-					remove(this);
-					begin = true;
+					if (arrowPlace == 0)
+						begin = true;
 				}
 					
 			}
