@@ -17,27 +17,30 @@ public class Game{
 	private GameFrame gameFrame;
 	private boolean quadGun;
 
+	//	private Enemy[] test;
+
 	public Game(GameFrame frame, Grid grid){
 		gameFrame = frame;
 		ArrayList<Long> times = new ArrayList<Long>();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		//		test = new Enemy[20];
 		for (int i = 0; i < 20; i++) {
-			Action a1 = new Action(2000, true, -2, 0, false, false, null, true, 4000);
-			Action a2 = new Action(4000, true, 2, 0, false, false, null, true, 4000);
-			Action a3 = new Action(3000, true, 0, -2, false, false, null, true, 4000);
-			Action a4 = new Action(5000, true, 0, 2, false, false, null, true, 4000);
+			//			Action a1 = new Action(2000, true, -2, 0, false, false, null, true, 4000);
+			//			Action a2 = new Action(4000, true, 2, 0, false, false, null, true, 4000);
+			//			Action a3 = new Action(3000, true, 0, -2, false, false, null, true, 4000);
+			//			Action a4 = new Action(5000, true, 0, 2, false, false, null, true, 4000);
 			ArrayList<Action> acts1 = new ArrayList<Action>();
-			acts1.add(a1);
-			acts1.add(a2);
-			acts1.add(a3);
-			acts1.add(a4);
-			Enemy e1 = new Enemy(new Coordinate(30*i + 100, 400), 30, 30, 0, 0, 5, 500, acts1, Powerup.EXTRA_LIFE);
+			//			acts1.add(a1);
+			//			acts1.add(a2);
+			//			acts1.add(a3);
+			//			acts1.add(a4);
+			Enemy e1 = new Enemy(new Coordinate(30*i + 100, 400), 30, 30, 0, 0, 5, 500, acts1, Powerup.QUAD_GUN);
 			//			System.out.println("X Velocity: " + e1.getXVelocity());
 			//			System.out.println("Y Velocity: " + e1.getYVelocity());
 			enemies.add(e1);
 			times.add(new Long(1000));
+			//			test[i] = e1;
 		}
-
 		Level testLevel = new Level(enemies, times, 9999999);
 		levels = new ArrayList<Level>();
 		levels.add(testLevel);
@@ -49,6 +52,7 @@ public class Game{
 	public void shoot(){
 		if (shoot) {
 			Player p = grid.getPlayer();
+			//			Projectile p1 = new Projectile(new Coordinate(p.getCoordinate().getX() + 13, p.getCoordinate().getY()), false, false);
 			Projectile p1 = new Projectile(new Coordinate(p.getCoordinate().getX() + 3 , p.getCoordinate().getY()), false, false);
 			Projectile p2= new Projectile(new Coordinate(p.getCoordinate().getX() + 23 , p.getCoordinate().getY()), false, false);
 
@@ -72,6 +76,7 @@ public class Game{
 
 	public void nextFrame(long initialTime){
 		//		System.out.println("start");
+
 		counter++;
 		if (counter == 3) {
 			counter = 0;
@@ -228,7 +233,6 @@ public class Game{
 						grid.removeEnemy(e);
 						i--;
 						death();
-						grid.addPowerup(e.getPowerup());
 					}
 				}
 			}
@@ -256,28 +260,30 @@ public class Game{
 				}
 			}
 			for (int i = 0; i < grid.getEnemies().size(); i++) {
-				Enemy e = grid.getEnemies().get(i);
-				//			System.out.println("Enemy: " + i + "Position: " + e.getCoordinate());
+				Enemy currentEnemy = grid.getEnemies().get(i);
 				for (int j = 0; j < grid.getFriendlyProjectiles().size(); j++) {
-					Projectile p = grid.getFriendlyProjectiles().get(j);
-					if (e.getHitbox().hit(p.getHitbox())) {
-						grid.removeProjectile(p);
+					Projectile currentProjectile = grid.getFriendlyProjectiles().get(j);
+					if (currentEnemy.getHitbox().hit(currentProjectile.getHitbox())) {
+						grid.removeProjectile(currentProjectile);
 						j--;
-						e.hit();
-						if (!e.isAlive()) {
-							i--;
-							score += e.getPoints();
-							if (e.hasPowerup()) {
-								grid.addPowerup(e.getPowerup());
-//								System.out.println("Enemy: " + i + " Powerup Added");
+						currentEnemy.hit();
+						if (!currentEnemy.isAlive()) {
+							score += currentEnemy.getPoints();
+							currentEnemy.removePoints();
+							if (currentEnemy.hasPowerup()) {
+								grid.addPowerup(currentEnemy.getPowerup());
+								currentEnemy.removePowerup();
 							}
+								
 						}
-						//					System.out.println("hit");
 					}
 				}
 			}
 		}
 		gameFrame.updateFrame(grid, score, lives, shields, grid.getProjectiles().size(), grid.getEnemies().size(), grid.getPowerups().size());
+		//		for (int i = 0; i < 20; i++) {
+		//			System.out.println(grid.getEnemies().indexOf(test[i]));
+		//		}
 		//		System.out.println("end");
 
 	}
