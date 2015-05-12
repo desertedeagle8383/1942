@@ -25,15 +25,21 @@ public class Game{
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		//		test = new Enemy[20];
 		for (int i = 0; i < 20; i++) {
-			//			Action a1 = new Action(2000, true, -2, 0, false, false, null, true, 4000);
-			//			Action a2 = new Action(4000, true, 2, 0, false, false, null, true, 4000);
-			//			Action a3 = new Action(3000, true, 0, -2, false, false, null, true, 4000);
-			//			Action a4 = new Action(5000, true, 0, 2, false, false, null, true, 4000);
+						Action a1 = new Action(2000, -2, 0, true, 4000);
+						Action a2 = new Action(4000, 2, 0, true, 4000);
+						Action a3 = new Action(3000, 0, -2, true, 4000);
+						Action a4 = new Action(5000, 0, 2, true, 4000);
+						Action a5 = new Action(2000, true, null, true, 3000);
+						Action a6 = new Action(3000, false, new Coordinate(0, 0), true, 3000);
+						Action a7 = new Action(4000, false, 90, true, 3000);
 			ArrayList<Action> acts1 = new ArrayList<Action>();
-			//			acts1.add(a1);
-			//			acts1.add(a2);
-			//			acts1.add(a3);
-			//			acts1.add(a4);
+						acts1.add(a1);
+						acts1.add(a2);
+						acts1.add(a3);
+						acts1.add(a4);
+						acts1.add(a5);
+						acts1.add(a6);
+						acts1.add(a7);
 			Enemy e1 = new Enemy(new Coordinate(30*i + 100, 400), 30, 30, 0, 0, 5, 500, acts1, Powerup.QUAD_GUN);
 			//			System.out.println("X Velocity: " + e1.getXVelocity());
 			//			System.out.println("Y Velocity: " + e1.getYVelocity());
@@ -154,10 +160,16 @@ public class Game{
 								currentEnemy.setYVelocity(currentAction.getYVelocity());
 							}
 							if (currentAction.getFire()) {
-								if (currentAction.aimsAtPlayer()) 
+								if (currentAction.aimsAtPlayer()) {
 									grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), player.getCoordinate()));
-								else
-									grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getTargetCoordinate()));
+								}
+								else {
+									if (currentAction.hasTarget()) {
+										grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getTargetCoordinate()));
+									} else {
+										grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getAngle()));
+									}
+								}
 							}
 							currentActions.remove(currentAction);
 							j--;
