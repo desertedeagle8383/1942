@@ -5,15 +5,19 @@ public class Projectile extends Thing{
 
 	public Projectile(boolean enemy, Coordinate coordinate, Coordinate targetCoordinate) {
 		enemyProjectile = enemy;
-		double angle;
-		if (targetCoordinate.getX() - coordinate.getX() == 0) {
-			if (targetCoordinate.getY() > coordinate.getY())
-				angle = Math.PI/2;
-			else
-				angle = -Math.PI/2;
-		} else {
-			angle = Math.atan((targetCoordinate.getY() - coordinate.getY())/(targetCoordinate.getX() - coordinate.getX()));
-		}
+		setCoordinate(coordinate);
+		double dx = targetCoordinate.getX() - coordinate.getX();
+		double dy = targetCoordinate.getY() - coordinate.getY();
+		double h = Math.sqrt(dy*dy + dx*dx);
+		setXVelocity((int) (15*dx/h));
+		setYVelocity((int) (15*dy/h));
+		setWidth(8);
+		setHeight(8);
+		setHitbox(new Hitbox(coordinate, 8, 8));
+		setImage(filePath1);
+	}
+	public Projectile(boolean enemy, Coordinate coordinate, double angle) {
+		enemyProjectile = enemy;
 		setCoordinate(coordinate);
 		setXVelocity((int) (15*Math.cos(angle)));
 		setYVelocity((int) (15*Math.sin(angle)));
