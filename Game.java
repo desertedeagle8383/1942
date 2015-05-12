@@ -382,11 +382,16 @@ public class Game{
 		}
 	}
 
-	public static void main(String args[]){
+public static void main(String args[]){
+		boolean running = true;
 		Grid grid = new Grid(800, 750);
 		GamePanel gamePanel = new GamePanel();
 		GameFrame frame = new GameFrame(gamePanel);
 		Game game = new Game(frame, grid);
+		while(running){
+			if (game.gameFrame.getBegin())
+				running = false;
+		}
 		game.startGame();
 	}
 }
