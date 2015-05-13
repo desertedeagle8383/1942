@@ -9,8 +9,8 @@ public class Projectile extends Thing{
 		double dx = targetCoordinate.getX() - coordinate.getX();
 		double dy = targetCoordinate.getY() - coordinate.getY();
 		double h = Math.sqrt(dy*dy + dx*dx);
-		setXVelocity((int) (15*dx/h));
-		setYVelocity((int) (15*dy/h));
+		setXVelocity((int) (10*dx/h));
+		setYVelocity((int) (10*dy/h));
 		setWidth(8);
 		setHeight(8);
 		setHitbox(new Hitbox(coordinate, 8, 8));
