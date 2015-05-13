@@ -20,36 +20,170 @@ public class Game{
 	//	private Enemy[] test;
 
 	public Game(GameFrame frame, Grid grid){
+		//		System.out.println(grid.getWidth());
+		//		System.out.println(grid.getHeight());
 		gameFrame = frame;
 		ArrayList<Long> times = new ArrayList<Long>();
 		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		//		test = new Enemy[20];
-		for (int i = 0; i < 20; i++) {
-						Action a1 = new Action(2000, -2, 0, true, 4000);
-						Action a2 = new Action(4000, 2, 0, true, 4000);
-						Action a3 = new Action(3000, 0, -2, true, 4000);
-						Action a4 = new Action(5000, 0, 2, true, 4000);
-						Action a5 = new Action(2000, true, null, true, 3000);
-						Action a6 = new Action(3000, false, new Coordinate(0, 0), true, 3000);
-						Action a7 = new Action(4000, false, 90, true, 3000);
-			ArrayList<Action> acts1 = new ArrayList<Action>();
-						acts1.add(a1);
-						acts1.add(a2);
-						acts1.add(a3);
-						acts1.add(a4);
-						acts1.add(a5);
-						acts1.add(a6);
-						acts1.add(a7);
-			Enemy e1 = new Enemy(new Coordinate(30*i + 100, 400), 30, 30, 0, 0, 5, 500, acts1, Powerup.QUAD_GUN);
-			//			System.out.println("X Velocity: " + e1.getXVelocity());
-			//			System.out.println("Y Velocity: " + e1.getYVelocity());
-			enemies.add(e1);
-			times.add(new Long(1000));
-			//			test[i] = e1;
-		}
-		Level testLevel = new Level(enemies, times, 9999999);
+
+		//ORIGINAL TEST FORMATION
+
+		//		for (int i = 0; i < 20; i++) {
+		//			Action a1 = new Action(2000, -2, 0, true, 4000);
+		//			Action a2 = new Action(4000, 2, 0, true, 4000);
+		//			Action a3 = new Action(3000, 0, -2, true, 4000);
+		//			Action a4 = new Action(5000, 0, 2, true, 4000);
+		//			Action a5 = new Action(2000, true, null, true, 3000);
+		//			Action a6 = new Action(3000, false, new Coordinate(0, 0), true, 3000);
+		//			Action a7 = new Action(4000, false, 90, true, 3000);
+		//			ArrayList<Action> acts1 = new ArrayList<Action>();
+		//			acts1.add(a1);
+		//			acts1.add(a2);
+		//			acts1.add(a3);
+		//			acts1.add(a4);
+		//			acts1.add(a5);
+		//			acts1.add(a6);
+		//			acts1.add(a7);
+		//			Enemy e1 = new Enemy(new Coordinate(30*i + 100, 400), 30, 30, 0, 0, 5, 500, acts1, Powerup.QUAD_GUN);
+		//			//			System.out.println("X Velocity: " + e1.getXVelocity());
+		//			//			System.out.println("Y Velocity: " + e1.getYVelocity());
+		//			enemies.add(e1);
+		//			times.add(new Long(1000));
+		//			//			test[i] = e1;
+		//		}
+
+		//FORMATION 2
+
+		//				ArrayList<ArrayList<Action>> acts1 = new ArrayList<ArrayList<Action>>();
+		//				for (int i = 0; i < 15; i++) {
+		//					Action a1 = new Action(5000, false, 0, true, 2000);
+		//					Action a2 = new Action(5500, false, Math.PI/2, true, 2000);
+		//					Action a3 = new Action(6000, false, Math.PI, true, 2000);
+		//					Action a4 = new Action(6500, false, Math.PI*3/2, true, 2000);
+		//					ArrayList<Action> act = new ArrayList<Action>(1);
+		//					act.add(a1);
+		//					act.add(a2);
+		//					act.add(a3);
+		//					act.add(a4);
+		//					acts1.add(act);
+		//				}
+		//				Enemy e1 = new Enemy(new Coordinate(450, 700), 30, 30, 0, -1, 5, 500, acts1.get(0), Powerup.QUAD_GUN);
+		//				Enemy e2 = new Enemy(new Coordinate(430, 700), 30, 30, 0, -1, 5, 500, acts1.get(1), Powerup.QUAD_GUN);
+		//				Enemy e3 = new Enemy(new Coordinate(470, 700), 30, 30, 0, -1, 5, 500, acts1.get(2), Powerup.QUAD_GUN);
+		//				Enemy e4 = new Enemy(new Coordinate(410, 700), 30, 30, 0, -1, 5, 500, acts1.get(3), Powerup.QUAD_GUN);
+		//				Enemy e5 = new Enemy(new Coordinate(490, 700), 30, 30, 0, -1, 5, 500, acts1.get(4), Powerup.QUAD_GUN);
+		//				Enemy e6 = new Enemy(new Coordinate(400, 700), 30, 30, 0, -1, 5, 500, acts1.get(5), Powerup.QUAD_GUN);
+		//				Enemy e7 = new Enemy(new Coordinate(500, 700), 30, 30, 0, -1, 5, 500, acts1.get(6), Powerup.QUAD_GUN);
+		//				Enemy e8 = new Enemy(new Coordinate(400, 700), 30, 30, 0, -1, 5, 500, acts1.get(7), Powerup.QUAD_GUN);
+		//				Enemy e9 = new Enemy(new Coordinate(500, 700), 30, 30, 0, -1, 5, 500, acts1.get(8), Powerup.QUAD_GUN);
+		//				Enemy e10 = new Enemy(new Coordinate(430, 700), 30, 30, 0, -1, 5, 500, acts1.get(9), Powerup.QUAD_GUN);
+		//				Enemy e11 = new Enemy(new Coordinate(470, 700), 30, 30, 0, -1, 5, 500, acts1.get(10), Powerup.QUAD_GUN);
+		//				Enemy e12 = new Enemy(new Coordinate(430, 700), 30, 30, 0, -1, 5, 500, acts1.get(11), Powerup.QUAD_GUN);
+		//				Enemy e13 = new Enemy(new Coordinate(470, 700), 30, 30, 0, -1, 5, 500, acts1.get(12), Powerup.QUAD_GUN);
+		//				Enemy e14 = new Enemy(new Coordinate(470, 700), 30, 30, 0, -1, 5, 500, acts1.get(13), Powerup.QUAD_GUN);
+		//				Enemy e15 = new Enemy(new Coordinate(430, 700), 30, 30, 0, -1, 5, 500, acts1.get(14), Powerup.QUAD_GUN);
+		//				times.add(new Long(500));
+		//				times.add(new Long(1000));
+		//				times.add(new Long(1000));
+		//				times.add(new Long(1500));
+		//				times.add(new Long(1500));
+		//				times.add(new Long(2000));
+		//				times.add(new Long(2000));
+		//				times.add(new Long(2500));
+		//				times.add(new Long(2500));
+		//				times.add(new Long(3000));
+		//				times.add(new Long(3000));
+		//				times.add(new Long(3500));
+		//				times.add(new Long(3500));
+		//				times.add(new Long(4000));
+		//				times.add(new Long(4000));
+		//				enemies.add(e1);
+		//				enemies.add(e2);
+		//				enemies.add(e3);
+		//				enemies.add(e4);
+		//				enemies.add(e5);
+		//				enemies.add(e6);
+		//				enemies.add(e7);
+		//				enemies.add(e8);
+		//				enemies.add(e9);
+		//				enemies.add(e10);
+		//				enemies.add(e11);
+		//				enemies.add(e12);
+		//				enemies.add(e13);
+		//				enemies.add(e14);
+		//				enemies.add(e15);
+		
+		//Level 1
+		ArrayList<Action> acts01 = new ArrayList<Action>();
+		acts01.add(new Action(3000, true, null, true, 1500));
+		Enemy e01 = new Enemy(new Coordinate(450, 779), 30, 30, 0, -3, 3, 500, acts01);
+		times.add((long) 2000);
+		enemies.add(e01);
+		
+		ArrayList<Action> acts02 = new ArrayList<Action>();
+		acts02.add(new Action(7000, true, null, true, 1500));
+		Enemy e02 = new Enemy(new Coordinate(210, 779), 30, 30, 0, -3, 3, 500, acts02);
+		times.add((long) 6000);
+		enemies.add(e02);
+		
+		ArrayList<Action> acts03 = new ArrayList<Action>();
+		acts03.add(new Action(9000, true, null, true, 1500));
+		Enemy e03 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts03);
+		times.add((long) 8000);
+		enemies.add(e03);
+		
+		ArrayList<Action> acts04 = new ArrayList<Action>();
+		acts04.add(new Action(11500, true, null, true, 500));
+		Enemy e04 = new Enemy(new Coordinate(799, 779), 30, 30, -5, -5, 3, 500, acts04);
+		times.add((long) 11000);
+		enemies.add(e04);
+		
+		ArrayList<Action> acts05 = new ArrayList<Action>();
+		acts05.add(new Action(12000, true, null, true, 500));
+		Enemy e05 = new Enemy(new Coordinate(-29, 779), 30, 30, 5, -5, 3, 500, acts05);
+		times.add((long) 11500);
+		enemies.add(e05);
+		
+//		ArrayList<Action> acts06 = new ArrayList<Action>();
+//		acts06.add(new Action(9000, true, null, true, 1500));
+//		Enemy e06 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts06);
+//		times.add((long) 8000);
+//		enemies.add(e06);
+//		
+//		ArrayList<Action> acts07 = new ArrayList<Action>();
+//		acts07.add(new Action(9000, true, null, true, 1500));
+//		Enemy e07 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts07);
+//		times.add((long) 8000);
+//		enemies.add(e07);
+//		
+//		ArrayList<Action> acts08 = new ArrayList<Action>();
+//		acts08.add(new Action(9000, true, null, true, 1500));
+//		Enemy e08 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts08);
+//		times.add((long) 8000);
+//		enemies.add(e08);
+//		
+//		ArrayList<Action> acts09 = new ArrayList<Action>();
+//		acts09.add(new Action(9000, true, null, true, 1500));
+//		Enemy e09 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts09);
+//		times.add((long) 8000);
+//		enemies.add(e09);
+//		
+//		ArrayList<Action> acts10 = new ArrayList<Action>();
+//		acts10.add(new Action(9000, true, null, true, 1500));
+//		Enemy e10 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts10);
+//		times.add((long) 8000);
+//		enemies.add(e10);
+//		
+//		ArrayList<Action> acts11 = new ArrayList<Action>();
+//		acts11.add(new Action(9000, true, null, true, 1500));
+//		Enemy e11 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts11);
+//		times.add((long) 8000);
+//		enemies.add(e11);
+		
+		Level level1 = new Level(enemies, times, 60000);
 		levels = new ArrayList<Level>();
-		levels.add(testLevel);
+		levels.add(level1);
 		this.grid = grid;
 	}
 
@@ -95,7 +229,7 @@ public class Game{
 			for (int i = 0; i < times.size(); i++) {
 				long currentTime = times.get(i);
 				if (currentTime < elapsedTime) {
-					//				System.out.println("Enemy added: " + enemies.get(i).getCoordinate());
+					//									System.out.println("Enemy added: " + enemies.get(i).getCoordinate());
 					grid.addEnemy(enemies.get(i));
 					enemies.remove(i);
 					times.remove(i);
@@ -160,14 +294,16 @@ public class Game{
 								currentEnemy.setYVelocity(currentAction.getYVelocity());
 							}
 							if (currentAction.getFire()) {
+								Coordinate currentCoo = currentEnemy.getCoordinate();
+								Coordinate shootCoo = new Coordinate(currentCoo.getX() + (int) (currentEnemy.getWidth()/2), currentCoo.getY() - currentEnemy.getHeight());
 								if (currentAction.aimsAtPlayer()) {
-									grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), player.getCoordinate()));
+									grid.addProjectile(new Projectile(true, shootCoo, player.getCoordinate()));
 								}
 								else {
 									if (currentAction.hasTarget()) {
-										grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getTargetCoordinate()));
+										grid.addProjectile(new Projectile(true, shootCoo, currentAction.getTargetCoordinate()));
 									} else {
-										grid.addProjectile(new Projectile(true, currentEnemy.getCoordinate(), currentAction.getAngle()));
+										grid.addProjectile(new Projectile(true, shootCoo, currentAction.getAngle()));
 									}
 								}
 							}
@@ -286,7 +422,7 @@ public class Game{
 								grid.addPowerup(currentEnemy.getPowerup());
 								currentEnemy.removePowerup();
 							}
-								
+
 						}
 					}
 				}
@@ -382,16 +518,11 @@ public class Game{
 		}
 	}
 
-public static void main(String args[]){
-		boolean running = true;
+	public static void main(String args[]){
 		Grid grid = new Grid(800, 750);
 		GamePanel gamePanel = new GamePanel();
 		GameFrame frame = new GameFrame(gamePanel);
 		Game game = new Game(frame, grid);
-		while(running){
-			if (game.gameFrame.getBegin())
-				running = false;
-		}
 		game.startGame();
 	}
 }
