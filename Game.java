@@ -145,43 +145,147 @@ public class Game{
 		times.add((long) 11500);
 		enemies.add(e05);
 		
-//		ArrayList<Action> acts06 = new ArrayList<Action>();
-//		acts06.add(new Action(9000, true, null, true, 1500));
-//		Enemy e06 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts06);
-//		times.add((long) 8000);
-//		enemies.add(e06);
-//		
-//		ArrayList<Action> acts07 = new ArrayList<Action>();
-//		acts07.add(new Action(9000, true, null, true, 1500));
-//		Enemy e07 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts07);
-//		times.add((long) 8000);
-//		enemies.add(e07);
-//		
-//		ArrayList<Action> acts08 = new ArrayList<Action>();
-//		acts08.add(new Action(9000, true, null, true, 1500));
-//		Enemy e08 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts08);
-//		times.add((long) 8000);
-//		enemies.add(e08);
-//		
-//		ArrayList<Action> acts09 = new ArrayList<Action>();
-//		acts09.add(new Action(9000, true, null, true, 1500));
-//		Enemy e09 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts09);
-//		times.add((long) 8000);
-//		enemies.add(e09);
-//		
-//		ArrayList<Action> acts10 = new ArrayList<Action>();
-//		acts10.add(new Action(9000, true, null, true, 1500));
-//		Enemy e10 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts10);
-//		times.add((long) 8000);
-//		enemies.add(e10);
-//		
-//		ArrayList<Action> acts11 = new ArrayList<Action>();
-//		acts11.add(new Action(9000, true, null, true, 1500));
-//		Enemy e11 = new Enemy(new Coordinate(740, 779), 30, 30, 0, -3, 3, 500, acts11);
-//		times.add((long) 8000);
-//		enemies.add(e11);
+		ArrayList<Action> acts06 = new ArrayList<Action>();
+		acts06.add(new Action(15000, 4, -4, false, 0));
+		acts06.add(new Action(15500, 0, -6, false, 0));
+		acts06.add(new Action(16000, -4, -4, false, 0));
+		acts06.add(new Action(16500, -6, -0, false, 0));
+		acts06.add(new Action(17000, -4, 4, false, 0));
+		acts06.add(new Action(17500, 0, 6, false, 0));
+		acts06.add(new Action(18000, 4, 4, false, 0));
+		acts06.add(new Action(18500, 6, 0, false, 0));
+		acts06.add(new Action(14000, true, null, true, 1000));
+		Enemy e06 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts06);
+		times.add((long) 13000);
+		enemies.add(e06);
 		
-		Level level1 = new Level(enemies, times, 60000);
+		ArrayList<Action> acts07 = new ArrayList<Action>();
+		acts07.add(new Action(15500, 4, -4, false, 0));
+		acts07.add(new Action(16000, 0, -6, false, 0));
+		acts07.add(new Action(16500, -4, -4, false, 0));
+		acts07.add(new Action(17000, -6, -0, false, 0));
+		acts07.add(new Action(17500, -4, 4, false, 0));
+		acts07.add(new Action(18000, 0, 6, false, 0));
+		acts07.add(new Action(18500, 4, 4, false, 0));
+		acts07.add(new Action(19000, 6, 0, false, 0));
+		acts07.add(new Action(14500, true, null, true, 1500));
+		Enemy e07 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts07);
+		times.add((long) 13500);
+		enemies.add(e07);
+		
+		ArrayList<Action> acts08 = new ArrayList<Action>();
+		acts08.add(new Action(16000, 4, -4, false, 0));
+		acts08.add(new Action(16500, 0, -6, false, 0));
+		acts08.add(new Action(17000, -4, -4, false, 0));
+		acts08.add(new Action(17500, -6, -0, false, 0));
+		acts08.add(new Action(18000, -4, 4, false, 0));
+		acts08.add(new Action(18500, 0, 6, false, 0));
+		acts08.add(new Action(19000, 4, 4, false, 0));
+		acts08.add(new Action(19500, 6, 0, false, 0));
+		acts08.add(new Action(15000, true, null, true, 1500));
+		Enemy e08 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts08);
+		times.add((long) 14000);
+		enemies.add(e08);
+		
+		ArrayList<Action> acts09 = new ArrayList<Action>();
+		acts09.add(new Action(16500, 4, -4, false, 0));
+		acts09.add(new Action(17000, 0, -6, false, 0));
+		acts09.add(new Action(17500, -4, -4, false, 0));
+		acts09.add(new Action(18000, -6, -0, false, 0));
+		acts09.add(new Action(18500, -4, 4, false, 0));
+		acts09.add(new Action(19000, 0, 6, false, 0));
+		acts09.add(new Action(19500, 4, 4, false, 0));
+		acts09.add(new Action(20000, 6, 0, false, 0));
+		acts09.add(new Action(15500, true, null, true, 1500));
+		Enemy e09 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts09);
+		times.add((long) 14500);
+		enemies.add(e09);
+		
+		ArrayList<Action> acts10 = new ArrayList<Action>();
+		acts10.add(new Action(17000, 4, -4, false, 0));
+		acts10.add(new Action(17500, 0, -6, false, 0));
+		acts10.add(new Action(18000, -4, -4, false, 0));
+		acts10.add(new Action(18500, -6, -0, false, 0));
+		acts10.add(new Action(19000, -4, 4, false, 0));
+		acts10.add(new Action(19500, 0, 6, false, 0));
+		acts10.add(new Action(20000, 4, 4, false, 0));
+		acts10.add(new Action(20500, 6, 0, false, 0));
+		acts10.add(new Action(16000, true, null, true, 1500));
+		Enemy e10 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts10, Powerup.QUAD_GUN);
+		times.add((long) 15000);
+		enemies.add(e10);
+		
+		ArrayList<Action> acts11 = new ArrayList<Action>();
+		acts11.add(new Action(22000, 4, -4, false, 0));
+		acts11.add(new Action(22500, 0, -6, false, 0));
+		acts11.add(new Action(23000, -4, -4, false, 0));
+		acts11.add(new Action(23500, -6, -0, false, 0));
+		acts11.add(new Action(24000, -4, 4, false, 0));
+		acts11.add(new Action(24500, 0, 6, false, 0));
+		acts11.add(new Action(25000, 4, 4, false, 0));
+		acts11.add(new Action(25500, 6, 0, false, 0));
+		acts11.add(new Action(21000, true, null, true, 1000));
+		Enemy e11 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts11);
+		times.add((long) 20000);
+		enemies.add(e11);
+		
+		ArrayList<Action> acts12 = new ArrayList<Action>();
+		acts12.add(new Action(22500, 4, -4, false, 0));
+		acts12.add(new Action(23000, 0, -6, false, 0));
+		acts12.add(new Action(23500, -4, -4, false, 0));
+		acts12.add(new Action(24000, -6, -0, false, 0));
+		acts12.add(new Action(24500, -4, 4, false, 0));
+		acts12.add(new Action(25000, 0, 6, false, 0));
+		acts12.add(new Action(25500, 4, 4, false, 0));
+		acts12.add(new Action(26000, 6, 0, false, 0));
+		acts12.add(new Action(21500, true, null, true, 1500));
+		Enemy e12 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts12);
+		times.add((long) 20500);
+		enemies.add(e12);
+		
+		ArrayList<Action> acts13 = new ArrayList<Action>();
+		acts13.add(new Action(23000, 4, -4, false, 0));
+		acts13.add(new Action(23500, 0, -6, false, 0));
+		acts13.add(new Action(24000, -4, -4, false, 0));
+		acts13.add(new Action(24500, -6, -0, false, 0));
+		acts13.add(new Action(25000, -4, 4, false, 0));
+		acts13.add(new Action(25500, 0, 6, false, 0));
+		acts13.add(new Action(26000, 4, 4, false, 0));
+		acts13.add(new Action(26500, 6, 0, false, 0));
+		acts13.add(new Action(22000, true, null, true, 1500));
+		Enemy e13 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts13);
+		times.add((long) 21000);
+		enemies.add(e13);
+		
+		ArrayList<Action> acts14 = new ArrayList<Action>();
+		acts14.add(new Action(23500, 4, -4, false, 0));
+		acts14.add(new Action(24000, 0, -6, false, 0));
+		acts14.add(new Action(24500, -4, -4, false, 0));
+		acts14.add(new Action(25000, -6, -0, false, 0));
+		acts14.add(new Action(25500, -4, 4, false, 0));
+		acts14.add(new Action(26000, 0, 6, false, 0));
+		acts14.add(new Action(26500, 4, 4, false, 0));
+		acts14.add(new Action(27000, 6, 0, false, 0));
+		acts14.add(new Action(22500, true, null, true, 1500));
+		Enemy e14 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts14);
+		times.add((long) 21500);
+		enemies.add(e14);
+		
+		ArrayList<Action> acts15 = new ArrayList<Action>();
+		acts15.add(new Action(24000, 4, -4, false, 0));
+		acts15.add(new Action(24500, 0, -6, false, 0));
+		acts15.add(new Action(25000, -4, -4, false, 0));
+		acts15.add(new Action(25500, -6, -0, false, 0));
+		acts15.add(new Action(26000, -4, 4, false, 0));
+		acts15.add(new Action(26500, 0, 6, false, 0));
+		acts15.add(new Action(27000, 4, 4, false, 0));
+		acts15.add(new Action(27500, 6, 0, false, 0));
+		acts15.add(new Action(23000, true, null, true, 1500));
+		Enemy e15 = new Enemy(new Coordinate(-29, 600), 30, 30, 6, 0, 3, 500, acts15, Powerup.QUAD_GUN);
+		times.add((long) 22000);
+		enemies.add(e15);
+		
+		Level level1 = new Level(enemies, times, 30000);
 		levels = new ArrayList<Level>();
 		levels.add(level1);
 		this.grid = grid;
@@ -428,7 +532,7 @@ public class Game{
 				}
 			}
 		}
-		gameFrame.updateFrame(grid, score, lives, shields, grid.getProjectiles().size(), grid.getEnemies().size(), grid.getPowerups().size());
+		gameFrame.updateFrame(grid, score, lives, shields, grid.getEnemies().size());
 		//		for (int i = 0; i < 20; i++) {
 		//			System.out.println(grid.getEnemies().indexOf(test[i]));
 		//		}
@@ -487,6 +591,8 @@ public class Game{
 	private void endLevel() {
 		cancelTasks();
 		currentLevel++;
+		if (currentLevel == levels.size())
+			endGame();
 		//		System.out.println("level ended");
 	}
 
