@@ -19,12 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class MainMenu extends JPanel implements KeyListener{
-	JLabel spaceLabel, nameLabel, start, howToPlay, move, powerUps, enemies, movePic, powerUpPic, enemyPic;
+	JPanel movePanel;
+	JLabel spaceLabel, nameLabel, start, howToPlay, move, powerUps, enemies, movePic, powerUpPic, enemyPic, blankLabel;
 	Image name, arrow, resizedArrow, wasd;
 	ImageIcon nameIcon, arrowIcon, moveIcon;
-	String namePath = "src/1942.png";
-	String arrowPath = "src/Arrow.png";
-	String movePath = "src/wasd.png";
+	String namePath = "1942.png";
+	String arrowPath = "Arrow.png";
+	String movePath = "wasd.png";
 	int arrowPlace = 0;
 	boolean begin = false;
 	
@@ -80,13 +81,9 @@ public class MainMenu extends JPanel implements KeyListener{
 	public void howToPlay(){
 		removeAll();
 		
-		movePic = new JLabel();
-		movePic.setPreferredSize(new Dimension(400, 250));
-		wasd = setImage(movePath);
-		moveIcon = new ImageIcon(wasd);
-		movePic.setIcon(moveIcon);
-		add(movePic);
 		
+		
+		revalidate();
 		repaint();
 	}
 	public Image setImage(String filePath){
