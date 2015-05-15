@@ -48,6 +48,8 @@ public class MainMenu extends JPanel implements KeyListener{
 	}
 	public boolean begin(){return begin;}
 	public void create(){
+		arrowPlace = 0;
+		
 		add(Box.createRigidArea(new Dimension(800, 150)));
 
 		nameLabel = new JLabel();
