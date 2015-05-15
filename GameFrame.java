@@ -1,10 +1,17 @@
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -16,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 public class GameFrame extends JFrame{
 	private GamePanel gamePanel;
-	private JLabel scoreLabel, livesLabel, shieldsLabel, enemies;
+	private JLabel scoreLabel, livesLabel, shieldsLabel, enemies, highScoreLabel;
 	private JPanel contentPane, labels;
 	private MainMenu mainMenu;
 	private boolean up, down, left, right, space, shift;
@@ -24,9 +31,11 @@ public class GameFrame extends JFrame{
 	private boolean begin = false;
 	private Image liveImg, shieldImg, enemyImg, resizedLive, resizedShield, resizedEnemy;
 	private ImageIcon liveIcon, shieldIcon, enemyIcon;
-	private String livePath = "src/Player.png";
-	private String shieldPath = "src/Shield.png";
-	private String enemyPath = "src/Enemy.png";
+	private String livePath = "Player.png";
+	private String shieldPath = "Shield.png";
+	private String enemyPath = "Enemy.png";
+	private int score = 0;
+	private static int highScore = 0;
 	private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
 	private static final String MOVE_UP = "move up";
 	private static final String RELEASE_UP = "release up";
@@ -41,6 +50,22 @@ public class GameFrame extends JFrame{
 	private static final String SHIELD = "shift";
 	private static final String RELEASE_SHIELD = "release shift";
 	public GameFrame(GamePanel panel){
+		readIn();
+		
+		addWindowListener(new WindowListener() {
+	        public void windowClosing(WindowEvent e) {
+	        	writeOut();
+	            System.exit(-1);
+	        }
+	        public void windowOpened(WindowEvent e) {}
+	        public void windowClosed(WindowEvent e) {}
+	        public void windowIconified(WindowEvent e) {}
+	        public void windowDeiconified(WindowEvent e) {}
+	        public void windowActivated(WindowEvent e) {}
+	        public void windowDeactivated(WindowEvent e) {}
+
+	    });
+		
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		up = false;
@@ -49,27 +74,27 @@ public class GameFrame extends JFrame{
 		right = false;
 		space = false;
 		shift = false;
-		
+
 		gamePanel = panel;
 		gamePanel.setPreferredSize(new Dimension(800, 750));
-		
+
 		mainMenu = new MainMenu();
 		mainMenu.setPreferredSize(new Dimension(800, 750));
-		
+
 		contentPane = new JPanel();
 		setContentPane(contentPane);
-		
+
 		labels = new JPanel();
 		labels.setPreferredSize(new Dimension (800, 50));
-		
+
 		contentPane.add(labels);
 		contentPane.add(mainMenu);
-		
+
 		createKeyBindings();
-		
+
 		setSize(900, 850);
 		setVisible(true);
-		
+
 		while(waiting){
 			if (mainMenu.begin()){
 				waiting = false;
@@ -85,12 +110,17 @@ public class GameFrame extends JFrame{
 	public void createLabels(){
 		scoreLabel = new JLabel();
 		scoreLabel.setPreferredSize(new Dimension(300, 20));
+
 		livesLabel = new JLabel();
 		livesLabel.setPreferredSize(new Dimension(300, 20));
+		
 		shieldsLabel = new JLabel();
 		shieldsLabel.setPreferredSize(new Dimension(300, 20));
+	
 		enemies = new JLabel();
 		enemies.setPreferredSize(new Dimension(300, 20));
+		
+		highScoreLabel = new JLabel("High Score: " + highScore);
 		
 		liveImg = setImage(livePath);
 		shieldImg = setImage(shieldPath);
@@ -105,14 +135,34 @@ public class GameFrame extends JFrame{
 		shieldsLabel.setIcon(shieldIcon);
 		enemies.setIcon(enemyIcon);
 
-		
 		labels.add(scoreLabel);
 		labels.add(livesLabel);
 		labels.add(shieldsLabel);
 		labels.add(enemies);
+		labels.add(highScoreLabel);
 	}
 	public boolean getBegin(){
 		return begin;
+	}
+	public void readIn(){
+		try(BufferedReader br = new BufferedReader(new FileReader("Scores.txt"))) {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();;
+			highScore = Integer.parseInt(line);
+		}
+		catch(Exception e){
+		}
+	}
+	public void writeOut(){
+		if (score > highScore || highScore == 0){
+			try {
+				PrintWriter out = new PrintWriter("Scores.txt");
+
+				out.println(score);
+				out.close();
+			} catch (FileNotFoundException e) {
+			}
+		}
 	}
 	public void createKeyBindings(){
 		gamePanel.getInputMap(IFW).put(KeyStroke.getKeyStroke("W"), MOVE_UP);
@@ -251,7 +301,8 @@ public class GameFrame extends JFrame{
 		}
 		return image;
 	}
-	public void updateFrame(Grid g, int score, int lives, int shields, int projectile, int enemy, int powerup) {
+	public void updateFrame(Grid g, int score, int lives, int shields, int enemy) {
+		this.score = score;
 		gamePanel.updatePanel(g);
 		scoreLabel.setText("Score: " + score);
 		shieldsLabel.setText("Shields: " + shields);
